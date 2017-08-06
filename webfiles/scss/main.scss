@@ -1,0 +1,164 @@
+@import 'pages/entrar.scss';
+@import 'componentes/header.scss';
+@import 'componentes/footer.scss';
+@import 'pages/home.scss';
+@import 'pages/perfil.scss';
+@import 'pages/amigos.scss';
+@import 'pages/busca.scss';
+
+body {
+    margin: 0px;
+    padding: 0px;
+    overflow-x: hidden !important;
+    font-family: 'Roboto', sans-serif !important;
+    text-rendering: optimizelegibility;
+    background: #f5f5f5;
+}
+
+main {
+    padding-top: 120px;
+    min-height: 576px;
+    @media screen and (max-width : 780px){
+        padding-top : 50px !important;
+        
+    }
+}
+
+.modal-novo-post {
+    .modal-title {
+        font-family: Graduate, cursive;
+        text-transform: uppercase;
+        font-size: 20px;
+        text-align: center;
+        margin: 0px;
+        font-weight: bold;
+        letter-spacing: 1px;
+    }
+    label {
+        font-weight: bold;
+        color: #45BF55;
+    }
+    input,
+    textarea {
+        &:focus {
+            border-color: #45BF55 !important;
+        }
+    }
+    
+    .btn {
+        cursor: pointer;
+        background: #45BF55;
+        color: #fff;
+        border-radius: 0px;
+        transition: all 0.3s ease-in-out;
+        &:hover,
+        &:focus {
+            background: #333 !important;
+        }
+        i {
+            margin-right: 6px;
+        }
+    }
+}
+
+.modal-curtidas {
+    .modal-title {
+        font-family: Graduate, cursive;
+        text-transform: uppercase;
+        font-size: 20px;
+        text-align: center;
+        margin: 0px;
+        font-weight: bold;
+        letter-spacing: 1px;
+    }
+    .modal-body {
+        height: 235px;
+        overflow-y: scroll;
+    }
+    .lista-curtidas {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        list-style: none;
+        li {
+            margin-bottom: 30px;
+            margin-right: 30px !important;
+            &:last-child {
+                margin-right: 30px !important;
+            }
+            a {
+                color: #333;
+                font-weight: bold;
+                img {
+                    width: 50px;
+                    border-radius: 50%;
+                    margin-right: 14px;
+                }
+            }
+            label {
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+//Botão Go To the top
+.cd-top {
+    z-index: 100 !important;
+    display: inline-block;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    position: fixed;
+    bottom: 50px;
+    right: 10px;
+    text-align: center;
+
+    box-shadow: 0 0 10px rgba(#000, .05);
+
+    
+    /* image replacement properties */
+    i{
+        font-size: 27px;
+        color : #fff;
+        margin-top: 4px !important;
+    }
+
+    background: #45bf55 !important;
+
+
+    visibility: hidden;
+    opacity: 0;
+
+    -webkit-transition: opacity .3s 0s, visibility 0s .3s;
+    -moz-transition: opacity .3s 0s, visibility 0s .3s;
+    transition: opacity .3s 0s, visibility 0s .3s;
+
+    &.cd-is-visible, &.cd-fade-out, .no-touch &:hover {
+        -webkit-transition: opacity .3s 0s, visibility 0s 0s;
+        -moz-transition: opacity .3s 0s, visibility 0s 0s;
+        transition: opacity .3s 0s, visibility 0s 0s;
+    }
+
+    &.cd-is-visible { /* the button becomes visible */
+        visibility: visible;
+        opacity: 1;
+        text-align: center;
+    }
+
+    &.cd-fade-out { /* if the user keeps scrolling down, the button is out of focus and becomes less visible */
+        opacity: .5;
+    }
+
+    .no-touch &:hover {
+        background-color: rgba(#45bf55, 1);
+        opacity: 1;
+    }
+
+
+}
+
+object {
+    display: none !important;
+}

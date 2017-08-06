@@ -1,0 +1,14 @@
+###### Forçando www
+RewriteEngine On
+RewriteCond %{HTTP_HOST} !^www\.
+RewriteCond %{HTTP_HOST} !^.*?\.%{HTTP_HOST}\.
+RewriteCond %{HTTP_HOST} !^.*?[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3} 
+RewriteCond %{HTTP_HOST} !^localhost
+RewriteRule ^ http://www.%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+###### URL Amigável
+RewriteEngine on
+RewriteCond %{SCRIPT_FILENAME} !-f
+RewriteCond %{SCRIPT_FILENAME} !-d
+RewriteCond %{REQUEST_URI} !\.(jpg|jpeg|css|js|png|gif|bmp|mp3|mp4|xml|ico|html)$
+RewriteRule ^(.*)$ index.php?GET_VARS=$1

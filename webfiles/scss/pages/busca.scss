@@ -1,0 +1,221 @@
+.busca-page {
+    margin-top: 10px;
+    margin-bottom: 40px;
+    @media screen and (max-width : 780px){
+        margin-top: 60px !important;
+    }
+    .container-branco {
+        padding: 20px;
+        padding-top: 40px;
+        padding-bottom: 40px;
+        background: #fff;
+        overflow: hidden;
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+        @media screen and (max-width : 560px){
+            padding-left : 0px !important;
+            padding-right: 0px !important;
+            .lista-pessoas{
+                padding: 20px;
+            }
+            .titulo-busca{
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+            .post{
+                border: 0px !important;
+                border-top: 1px solid #cecece !important;
+                border-bottom: 1px solid #cecece !important;
+            }
+        }
+        .titulo-busca {
+            font-family: Graduate, cursive;
+            font-weight: bold;
+            margin-bottom: 40px;
+            
+            span{
+                color: #45BF55;
+            }
+        }
+
+        .lista-pessoas {
+            padding: 0px;
+            margin: 0px;
+            list-style: none;
+            li {
+                float: left;
+                width: 49%;
+
+                padding-left: 15px;
+                padding-right: 15px;
+                margin-bottom: 60px;
+                @media screen and (max-width : 560px){
+                    width: 100%;
+                    margin-bottom: 30px !important;
+                    .pessoa{
+                        img{
+                            width: 60px !important;
+                        }
+                    }   
+                }
+                .pessoa {
+                    a {
+                        color: #333;
+                        transition: all 0.3s;
+                        font-weight: bold;
+                        &:hover,
+                        &:focus {
+                            text-decoration: none;
+                            color: #45BF55;
+                        }
+                    }
+                    .info {
+                        img {
+                            width: 80px;
+                            border-radius: 50%;
+                            margin-right: 10px;
+                        }
+                        h5 {
+                            display: inline-block;
+                        }
+                    }
+                    .botoes{
+                        margin-top: 20px;
+                        display: flex;
+                        justify-content: center;
+                        
+                        .btn{
+                            color: #fff;
+                            margin-right: 10px;
+                            cursor: pointer;
+                            border-radius: 0px;
+                            &:last-child{
+                                margin-right: 0px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .lista-posts {
+            margin-top: 30px;
+            .post {
+                margin-bottom: 40px;
+                border: 1px solid #cecece;
+                .post-header {
+                    padding: 20px;
+                    overflow: hidden;
+                    .sobre-usuario {
+                        float: left;
+                        a {
+                            font-weight: bold;
+                            color: #333;
+                            font-size: 18px;
+                            &:hover,
+                            &:focus {
+                                text-decoration: none;
+                                color: #45BF55;
+                            }
+                        }
+                        img {
+                            width: 50px;
+                            border-radius: 50%;
+                            margin-right: 10px;
+                        }
+                    }
+                    .opcoes-post {
+                        float: right;
+                        margin-top: 13px;
+                        a {
+                            color: #333;
+                            margin-right: 16px;
+                            font-size: 18px;
+                            &:hover,
+                            &:focus {
+                                text-decoration: none;
+                                color: #45BF55;
+                            }
+                            i {
+                                margin-right: 6px;
+                            }
+                        }
+                    }
+                }
+                .post-info {
+                    margin-top: 20px;
+                    .lista-info {
+                        
+                        list-style: none;
+                        display: flex;
+                        justify-content: center;
+                        margin: 0px;
+                        padding: 0px;
+                        li {
+                            margin-right: 30px;
+                            font-weight: bold;
+                            font-size: 17px;
+                            a {
+                                color: #000;
+                                &:hover {
+                                    color: #45BF55;
+                                    text-decoration: none !important;
+                                    span {
+                                        background: #000;
+                                    }
+                                }
+                            }
+                            &:last-child {
+                                margin-right: 0px;
+                            }
+                            i {
+                                margin-right: 6px;
+                            }
+                            span {
+                                padding: 8px;
+                                border-radius: 50%;
+                                background: #45BF55;
+                                text-align: center;
+                                color: #fff;
+                                font-weight: bold;
+                                font-size: 13px;
+                                margin-left: 6px;
+                                transition: all 0.3s ease-in-out;
+                                
+                            }
+                        }
+                    }
+                }
+                .post-body {
+                    padding: 20px;
+                    .imagem {
+                        overflow: hidden;
+                        img {
+                            transition: all 0.4s ease-in-out;
+                            object-fit: cover;
+                            width: 100%;
+                            max-height: 350px;
+                            &:hover,
+                            &:focus {
+                                transform: scale(1.2);
+                            }
+                        }
+                    }
+                    .data-postagem{
+                        margin-top: 20px;
+                        i{
+                            margin-right: 6px;
+                        }
+                    }
+                    .titulo {
+                        font-size: 20px;
+                        color: #45BF55;
+                        margin-top: 10px;
+                    }
+                    .texto {
+                        font-size: 16px;
+                    }
+                }
+            }
+        }
+    }
+}
