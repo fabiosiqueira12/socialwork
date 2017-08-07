@@ -87,7 +87,7 @@ $(document).ready(function () {
     $("#btn-sair").click(function () {
         $.ajax({
             type: "POST",
-            url: "http://localhost/socialteste/deslogar",
+            url: "http://localhost/socialwork/deslogar",
             data: "",
             dataType: 'json',
             success: function (response) {
@@ -119,7 +119,7 @@ $(document).ready(function () {
                 }
                 $.ajax({
                     type: "POST",
-                    url: "http://localhost/socialteste/desativar",
+                    url: "http://localhost/socialwork/desativar",
                     data: data,
                     dataType: 'json',
                     success: function (response) {
@@ -190,7 +190,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: "POST",
-            url: "http://localhost/socialteste/editarusuario",
+            url: "http://localhost/socialwork/editarusuario",
             data: data,
             dataType: 'json',
             success: function (response) {
@@ -327,7 +327,7 @@ $(document).ready(function () {
                 }
                 $.ajax({
                     type: "POST",
-                    url: "http://localhost/socialteste/excluirpost",
+                    url: "http://localhost/socialwork/excluirpost",
                     data: data,
                     dataType: 'json',
                     success: function (response) {
@@ -381,7 +381,7 @@ $(document).ready(function () {
         }
         $.ajax({
             type: "POST",
-            url: "http://localhost/socialteste/solicitaramizade",
+            url: "http://localhost/socialwork/solicitaramizade",
             data: data,
             dataType: 'json',
             success: function (response) {
@@ -413,7 +413,7 @@ $(document).ready(function () {
             }
             $.ajax({
                 type: "POST",
-                url: "http://localhost/socialteste/desfazeramizade",
+                url: "http://localhost/socialwork/desfazeramizade",
                 data: data,
                 dataType: 'json',
                 success: function (response) {
@@ -445,7 +445,7 @@ $(document).ready(function () {
         }
         $.ajax({
             type: "POST",
-            url: "http://localhost/socialteste/aceitarsolicitacao",
+            url: "http://localhost/socialwork/aceitarsolicitacao",
             data: data,
             dataType: 'json',
             success: function (response) {
@@ -465,7 +465,7 @@ $(document).ready(function () {
         }
         $.ajax({
             type: "POST",
-            url: "http://localhost/socialteste/recusarsolicitacao",
+            url: "http://localhost/socialwork/recusarsolicitacao",
             data: data,
             dataType: 'json',
             success: function (response) {
@@ -484,7 +484,7 @@ $(document).ready(function () {
         }
         $.ajax({
             type: "POST",
-            url: "http://localhost/socialteste/curtir",
+            url: "http://localhost/socialwork/curtir",
             data: data,
             dataType: 'json',
             success: function (response) {
@@ -504,7 +504,7 @@ $(document).ready(function () {
         }
         $.ajax({
             type: "POST",
-            url: "http://localhost/socialteste/descurtir",
+            url: "http://localhost/socialwork/descurtir",
             data: data,
             dataType: 'json',
             success: function (response) {
