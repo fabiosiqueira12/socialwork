@@ -17,6 +17,7 @@
         <script src="<?= $url ?>/webfiles/js/tether.min.js"></script>
         <script src="<?= $url ?>/webfiles/js/bootstrap.min.js"></script>
         <script src="<?= $url ?>/webfiles/js/sweetalert.min.js"></script>
+        <script src="<?= $url ?>/webfiles/js/venobox.min.js"></script>
         <script src="<?= $url ?>/webfiles/js/main.js"></script>
         <!-- Fim JS !-->
     

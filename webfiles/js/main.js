@@ -406,10 +406,10 @@ $(document).ready(function () {
             confirmButtonText: "Sim, desfazer !",
             cancelButtonText: "Cancelar",
             closeOnConfirm: true
-        },function (){
+        }, function () {
             var data = {
-            iduserprinc: iduserprinc,
-            idusersecun: idusersecun
+                iduserprinc: iduserprinc,
+                idusersecun: idusersecun
             }
             $.ajax({
                 type: "POST",
@@ -418,10 +418,10 @@ $(document).ready(function () {
                 dataType: 'json',
                 success: function (response) {
                     swal({
-                        title: "Sucesso !!",
-                        text: response.message,
-                        type: "success",
-                        closeOnConfirm: true
+                            title: "Sucesso !!",
+                            text: response.message,
+                            type: "success",
+                            closeOnConfirm: true
                         },
                         function () {
                             window.location.reload();
@@ -435,10 +435,10 @@ $(document).ready(function () {
             });
         });
 
-        
+
     });
 
-    $(".btn-aceitar").click(function (){
+    $(".btn-aceitar").click(function () {
         var data_aceitar = $(this).find("span").data("aceitar");
         var data = {
             data_aceitar: data_aceitar,
@@ -449,7 +449,7 @@ $(document).ready(function () {
             data: data,
             dataType: 'json',
             success: function (response) {
-                
+
             },
             error: function (response) {}
         }).always(function () {
@@ -458,7 +458,7 @@ $(document).ready(function () {
 
     });
 
-    $(".btn-recusar").click(function (){
+    $(".btn-recusar").click(function () {
         var data_recusar = $(this).find("span").data("recusar");
         var data = {
             data_recusar: data_recusar,
@@ -469,7 +469,7 @@ $(document).ready(function () {
             data: data,
             dataType: 'json',
             success: function (response) {
-                
+
             },
             error: function (response) {}
         }).always(function () {
@@ -477,7 +477,7 @@ $(document).ready(function () {
         });
     });
 
-    $(".btn-curtir").click(function (){
+    $(".btn-curtir").click(function () {
         var id_post = $(this).find("span").data("post");
         var data = {
             id_post: id_post,
@@ -488,16 +488,16 @@ $(document).ready(function () {
             data: data,
             dataType: 'json',
             success: function (response) {
-                
+
             },
             error: function (response) {}
         }).always(function () {
             window.location.reload();
         });
-        
+
     });
 
-    $(".btn-descurtir").click(function (){
+    $(".btn-descurtir").click(function () {
         var id_post = $(this).find("span").data("post");
         var data = {
             id_post: id_post,
@@ -508,13 +508,17 @@ $(document).ready(function () {
             data: data,
             dataType: 'json',
             success: function (response) {
-                
+
             },
             error: function (response) {}
         }).always(function () {
             window.location.reload();
         });
-        
+
+    });
+
+    $('.venobox').venobox({
+        spinner : "cube-grid"
     });
 
 });

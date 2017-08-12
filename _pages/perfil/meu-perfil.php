@@ -194,7 +194,9 @@
                                             <div class="post-body">
                                                 <div class="imagem">
                                                     <?php if ($value->getCaminhoImagem() != null) { ?>
-                                                        <img src="<?= $url . "/" . $value->getCaminhoImagem() ?>">
+                                                       <a class="venobox" href="<?= $url . "/" . $value->getCaminhoImagem() ?>">                         
+                                                            <img src="<?= $url . "/" . $value->getCaminhoImagem() ?>">
+                                                       </a>
                                                     <?php }else { ?>
                                                         <img src="<?= $url . "/webfiles/images/back-entrar-min.jpg" ?>">
                                                     <?php } ?>
@@ -352,7 +354,9 @@
                                             <div class="post-body">
                                                 <div class="imagem">
                                                     <?php if ($value->getCaminhoImagem() != null) { ?>
-                                                        <img src="<?= $url . "/" . $value->getCaminhoImagem() ?>">
+                                                       <a class="venobox" href="<?= $url . "/" . $value->getCaminhoImagem() ?>">                         
+                                                          <img src="<?= $url . "/" . $value->getCaminhoImagem() ?>">
+                                                       </a>
                                                     <?php }else { ?>
                                                         <img src="<?= $url . "/webfiles/images/back-entrar-min.jpg" ?>">
                                                     <?php } ?>

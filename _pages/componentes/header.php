@@ -27,6 +27,7 @@
             <link rel="stylesheet" href="<?= $url ?>/webfiles/css/bootstrap.min.css">
             <link rel="stylesheet" href="<?= $url ?>/webfiles/css/hover-min.css">
             <link rel="stylesheet" href="<?= $url ?>/webfiles/css/sweetalert.min.css">
+            <link media="screen" rel="stylesheet" href="<?= $url ?>/webfiles/css/venobox.css">
             <link rel="stylesheet" href="<?= $url ?>/webfiles/css/main.css">
         <!-- FIM CSS !-->
 
