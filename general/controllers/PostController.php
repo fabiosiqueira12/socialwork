@@ -128,7 +128,7 @@ class PostController
     public function retornaQuantidadeDePosts($usuarioId){
         $stmt = $this->PDO->prepare("SELECT id FROM ".
         $this->tabela.
-        " WHERE id_usuario = :idusuario");
+        " WHERE id_usuario = :idusuario  and status_post = 1");
         $stmt->bindValue(':idusuario',$usuarioId);
         $stmt->execute();
         $result = $stmt->fetchALL();
@@ -145,6 +145,7 @@ class PostController
         "(relacionamento.id_usuario_princ = post.id_usuario OR relacionamento.id_user_seguidor = post.id_usuario) " .
         " AND relacionamento.status_relacionamento = 2".
         " AND (relacionamento.id_usuario_princ = :usuarioid OR relacionamento.id_user_seguidor = :usuarioid)".
+        " AND post.status_post = 1".
         " ORDER BY post.data_insert DESC LIMIT 20");
         $stmt->bindValue(':usuarioid', $usuarioId);
         $stmt->execute();
