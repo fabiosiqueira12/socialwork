@@ -143,7 +143,9 @@ class PostController
         $this->tabela . " INNER JOIN relacionamento ".
         "WHERE post.id_usuario != :usuarioid AND ".
         "(relacionamento.id_usuario_princ = post.id_usuario OR relacionamento.id_user_seguidor = post.id_usuario) " .
-        " AND relacionamento.status_relacionamento = 2 ORDER BY post.data_insert DESC LIMIT 20");
+        " AND relacionamento.status_relacionamento = 2".
+        " AND (relacionamento.id_usuario_princ = :usuarioid OR relacionamento.id_user_seguidor = :usuarioid)".
+        " ORDER BY post.data_insert DESC LIMIT 20");
         $stmt->bindValue(':usuarioid', $usuarioId);
         $stmt->execute();
         $result = $stmt->fetchAll();

@@ -18,7 +18,7 @@ $app->get('/', function ($request, $response, $args) {
 });
 
 $app->get('/login', function ($request, $response, $args) {
-    
+
         return $this->view->render($response, 'autenticacao/entrar.php',
         ["title" => "Rede Social de teste",
         "descricao" => "Rede Social de teste."
@@ -34,7 +34,8 @@ $app->get('/cadastro', function ($request, $response, $args) {
 });
 
 $app->get('/home', function ($request, $response, $args) {
-    $url = $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["HTTP_HOST"] . "/socialwork";
+    $urlLocal = explode('/',$_SERVER["REQUEST_URI"]);
+    $url = $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["HTTP_HOST"] . "/" . $urlLocal[1];
     $userControl = new \general\helpers\UserControl();
     if ($userControl->estaLogado()) {
         $postController = new \general\controllers\PostController();
@@ -51,7 +52,8 @@ $app->get('/home', function ($request, $response, $args) {
 });
 
 $app->get('/home/friends', function ($request, $response, $args) {
-    $url = $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["HTTP_HOST"] . "/socialwork";
+    $urlLocal = explode('/',$_SERVER["REQUEST_URI"]);
+    $url = $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["HTTP_HOST"] . "/" . $urlLocal[1];
     $userControl = new \general\helpers\UserControl();
     if ($userControl->estaLogado()) {
         $postController = new \general\controllers\PostController();
@@ -69,7 +71,8 @@ $app->get('/home/friends', function ($request, $response, $args) {
 
 $app->get('/perfil/{user}', function ($request, $response, $args) {
 
-    $url = $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["HTTP_HOST"] . "/socialwork";
+    $urlLocal = explode('/',$_SERVER["REQUEST_URI"]);
+    $url = $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["HTTP_HOST"] . "/" . $urlLocal[1];
     $userControl = new \general\helpers\UserControl();
 
     if ($userControl->estaLogado()) {
@@ -98,7 +101,9 @@ $app->get('/perfil/{user}', function ($request, $response, $args) {
 });
 
 $app->get('/amigos', function ($request, $response, $args) {
-    $url = $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["HTTP_HOST"] . "/socialwork";
+    $urlLocal = explode('/',$_SERVER["REQUEST_URI"]);
+    $url = $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["HTTP_HOST"] . "/" . $urlLocal[1];
+    
     $userControl = new \general\helpers\UserControl();
 
     if ($userControl->estaLogado()) {
@@ -114,7 +119,9 @@ $app->get('/amigos', function ($request, $response, $args) {
 });
 
 $app->post('/busca', function ($request, $response, $args) {
-    $url = $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["HTTP_HOST"] . "/socialwork";
+    $urlLocal = explode('/',$_SERVER["REQUEST_URI"]);
+    $url = $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["HTTP_HOST"] . "/" . $urlLocal[1];
+    
     $userControl = new \general\helpers\UserControl();
 
     if ($userControl->estaLogado()) {  
@@ -166,7 +173,9 @@ $app->post('/busca', function ($request, $response, $args) {
 //Rotas de Formulário
 
 $app->post("/logar", function ($request) {
-    $url = $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["HTTP_HOST"] . "/socialwork";
+    $urlLocal = explode('/',$_SERVER["REQUEST_URI"]);
+    $url = $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["HTTP_HOST"] . "/" . $urlLocal[1];
+    
     
     $loginOrEmail = $_POST["login"];
     $senha = $_POST["senha"];
@@ -195,7 +204,9 @@ $app->post("/logar", function ($request) {
 
 $app->post("/deslogar", function ($request) {
 
-    $url = $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["HTTP_HOST"] . "/socialwork";
+    $urlLocal = explode('/',$_SERVER["REQUEST_URI"]);
+    $url = $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["HTTP_HOST"] . "/" . $urlLocal[1];
+    
     $userControl = new \general\helpers\UserControl();
     $userControl->deslogar();
 
@@ -205,7 +216,9 @@ $app->post("/deslogar", function ($request) {
 $app->post("/desativar", function ($request) {
 
     $id_user = $_POST["iduser"];
-    $url = $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["HTTP_HOST"] . "/socialwork";
+    $urlLocal = explode('/',$_SERVER["REQUEST_URI"]);
+    $url = $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["HTTP_HOST"] . "/" . $urlLocal[1];
+    
     $usuarioController = new \general\controllers\UsuarioController();
     $usuarioController->desativar($id_user);
 
@@ -241,7 +254,9 @@ $app->post("/ativar", function ($request) {
 
 $app->post("/cadastrar", function ($request) {
 
-    $url = $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["HTTP_HOST"] . "/socialwork";
+    $urlLocal = explode('/',$_SERVER["REQUEST_URI"]);
+    $url = $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["HTTP_HOST"] . "/" . $urlLocal[1];
+    
     $nome = $_POST["nome"];
     $user = $_POST["user"];
     $sexo = $_POST["sexo"];
@@ -284,7 +299,9 @@ $app->post("/cadastrar", function ($request) {
 
 $app->post("/editarusuario", function ($request) {
     
-     $url = $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["HTTP_HOST"] . "/socialwork";
+    $urlLocal = explode('/',$_SERVER["REQUEST_URI"]);
+    $url = $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["HTTP_HOST"] . "/" . $urlLocal[1];
+    
      $id_user = $_POST["iduser"];
      $nome = $_POST["nome"];
      $sexo = $_POST["sexo"];

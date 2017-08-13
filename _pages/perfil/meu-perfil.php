@@ -218,7 +218,7 @@
                     
                     <?php }else { ?>
                         
-                        <?php if ($usuarioperfil->getTipo() == 2){ ?>
+                        <?php if ($usuarioperfil->getTipo() == 2 && $relController->naoEhAmigo($usuario->getId(),$usuarioperfil->getId())){ ?>
                             <div class="alert alert-danger" role="alert">
                                 <strong>Atenção !!</strong> Você precisa ser amigo para visualizar os posts.
                             </div>

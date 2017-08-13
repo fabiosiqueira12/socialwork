@@ -1,5 +1,6 @@
 $(document).ready(function () {
-
+    var split =  window.location.pathname.split( '/' );
+    var URL_BASE = window.location.protocol + "//" + window.location.hostname + "/" + split[1] + "/";
 
     $("#form-login").on("submit", function (event) {
 
@@ -87,7 +88,7 @@ $(document).ready(function () {
     $("#btn-sair").click(function () {
         $.ajax({
             type: "POST",
-            url: "http://localhost/socialwork/deslogar",
+            url: URL_BASE + "deslogar",
             data: "",
             dataType: 'json',
             success: function (response) {
@@ -119,7 +120,7 @@ $(document).ready(function () {
                 }
                 $.ajax({
                     type: "POST",
-                    url: "http://localhost/socialwork/desativar",
+                    url: URL_BASE + "desativar",
                     data: data,
                     dataType: 'json',
                     success: function (response) {
@@ -190,7 +191,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: "POST",
-            url: "http://localhost/socialwork/editarusuario",
+            url: URL_BASE + "editarusuario",
             data: data,
             dataType: 'json',
             success: function (response) {
@@ -327,7 +328,7 @@ $(document).ready(function () {
                 }
                 $.ajax({
                     type: "POST",
-                    url: "http://localhost/socialwork/excluirpost",
+                    url: URL_BASE + "excluirpost",
                     data: data,
                     dataType: 'json',
                     success: function (response) {
@@ -381,7 +382,7 @@ $(document).ready(function () {
         }
         $.ajax({
             type: "POST",
-            url: "http://localhost/socialwork/solicitaramizade",
+            url: URL_BASE + "solicitaramizade",
             data: data,
             dataType: 'json',
             success: function (response) {
@@ -413,7 +414,7 @@ $(document).ready(function () {
             }
             $.ajax({
                 type: "POST",
-                url: "http://localhost/socialwork/desfazeramizade",
+                url: URL_BASE + "desfazeramizade",
                 data: data,
                 dataType: 'json',
                 success: function (response) {
@@ -445,7 +446,7 @@ $(document).ready(function () {
         }
         $.ajax({
             type: "POST",
-            url: "http://localhost/socialwork/aceitarsolicitacao",
+            url: URL_BASE + "aceitarsolicitacao",
             data: data,
             dataType: 'json',
             success: function (response) {
@@ -465,7 +466,7 @@ $(document).ready(function () {
         }
         $.ajax({
             type: "POST",
-            url: "http://localhost/socialwork/recusarsolicitacao",
+            url: URL_BASE + "recusarsolicitacao",
             data: data,
             dataType: 'json',
             success: function (response) {
@@ -484,7 +485,7 @@ $(document).ready(function () {
         }
         $.ajax({
             type: "POST",
-            url: "http://localhost/socialwork/curtir",
+            url: URL_BASE + "curtir",
             data: data,
             dataType: 'json',
             success: function (response) {
@@ -504,7 +505,7 @@ $(document).ready(function () {
         }
         $.ajax({
             type: "POST",
-            url: "http://localhost/socialwork/descurtir",
+            url: URL_BASE + "descurtir",
             data: data,
             dataType: 'json',
             success: function (response) {

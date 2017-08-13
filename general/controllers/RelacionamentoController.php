@@ -196,6 +196,20 @@ class RelacionamentoController
         }
     }
 
-    
+    public function naoEhAmigo($usuarioLogado,$usuarioPerfil){
+        $stmt = $this->PDO->prepare("SELECT id FROM ".
+        $this->tabela .
+        " WHERE ( id_usuario_princ = :usuariologado and id_user_seguidor = :usuarioperfil".
+        " OR id_usuario_princ = :usuarioperfil and id_user_seguidor = :usuariologado ) AND status_relacionamento = 2");
+        $stmt->bindValue(':usuariologado', $usuarioLogado);
+        $stmt->bindValue(':usuarioperfil', $usuarioPerfil);
+        $stmt->execute();
+        $result = $stmt->fetchAll();
 
+        if (count($result) > 0){
+            return false;
+        }else {
+            return true;
+        }
+    }
 }
