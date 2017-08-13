@@ -18,15 +18,15 @@
                     <div class="form-group">
                         <label>Sexo</label>
                         <select id="sexo" name="sexo" class="form-control">
-                            <option value="0">Masculino</option>
-                            <option value="1">Feminino</option>
+                            <option <?= $usuario->getSexo() == 0 ? "selected" : "" ?> value="0">Masculino</option>
+                            <option <?= $usuario->getSexo() == 1 ? "selected" : "" ?> value="1">Feminino</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label>Tipo de Usuário</label>
                         <select id="tipo-usuario" name="tipo-usuario" class="form-control">
-                            <option value="1">Público</option>
-                            <option value="2">Privado</option>
+                            <option <?= $usuario->getTipo() == 1 ? "selected" : "" ?> value="1">Público</option>
+                            <option <?= $usuario->getTipo() == 2 ? "selected" : "" ?> value="2">Privado</option>
                         </select>
                     </div>
                     <div class="form-group">
