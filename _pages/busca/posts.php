@@ -144,7 +144,7 @@
                                                 <img src="<?= $url . "/" . $value->getCaminhoImagem() ?>">
                                             </a>
                                         <?php }else { ?>
-                                            <img src="<?= $url . "/webfiles/images/back-entrar-min.jpg" ?>">
+                                            <img src="<?= $url . "/webfiles/images/back-post.png" ?>">
                                         <?php } ?>
                                     </div>
                                     <div class="data-postagem">

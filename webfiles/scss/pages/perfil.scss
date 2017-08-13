@@ -17,7 +17,7 @@
         float: left;
         transition: all 0.3s ease-in-out;
         color: #fff;
-        i{
+        i {
             margin-right: 6px;
         }
     }
@@ -33,9 +33,10 @@
         border-bottom: 2px solid #45BF55;
     }
     .bg_blur {
-        background-image: url('../images/back-entrar-min.jpg');
+        background-image: url('../images/back-perfil.png');
         height: 300px;
         background-size: cover;
+        background-position: center;
     }
     #btn-muda-foto {
         position: absolute;
@@ -45,24 +46,24 @@
         border-radius: 0px;
         color: #fff;
         transition: all 0.3s !important;
-        i{
+        i {
             margin-right: 6px;
         }
-        &:hover,&:focus{
+        &:hover,
+        &:focus {
             background: #2b8c38;
         }
-        @media screen and (max-width : 780px){
-            left : 50% !important;
-            top : -150px !important;
+        @media screen and (max-width: 780px) {
+            left: 50% !important;
+            top: -150px !important;
             transform: translateX(-50%) !important;
-            
         }
     }
     .follow_btn {
         text-decoration: none;
         position: absolute;
         left: 16%;
-        top: 42.5%;
+        top: 30.5%;
         width: auto;
         min-width: 40%;
         height: 15%;
@@ -74,12 +75,20 @@
         font-size: 20px;
         border: 4px solid #45BF55;
         transition: all 0.3s ease-in-out;
-        
-        @media screen and (max-width : 780px){
-            left: 30% !important;
-            top: 13.5% !important;
+
+        &.new-post{
+            top : 54% !important;
+            @media screen and (max-width: 780px) {
+                left: 30% !important;
+                top: 30.5% !important;
+            }
+
         }
 
+        @media screen and (max-width: 780px) {
+            left: 30% !important;
+            top: 10.5% !important;
+        }
     }
     .follow_btn:hover {
         border: 4px solid rgba(255, 255, 255, 0.8);
@@ -90,10 +99,8 @@
         margin-top: 70px;
         h2 {
             font-family: Graduate, cursive;
-        
-            @media screen and (max-width : 560px){
-                font-size : 24px !important;
-                
+            @media screen and (max-width: 560px) {
+                font-size: 24px !important;
             }
         }
         h6 {
@@ -107,7 +114,7 @@
         position: absolute;
         top: 75px;
         left: -75px;
-        @media screen and (max-width : 780px){
+        @media screen and (max-width: 780px) {
             top: -93px !important;
             left: 50% !important;
             transform: translateX(-50%) !important;
@@ -116,8 +123,8 @@
     @media (max-width: 767px) {
         .header {
             text-align: center;
-            margin-left : -3% !important;
-            padding-bottom : 30px !important;
+            margin-left: -3% !important;
+            padding-bottom: 30px !important;
         }
         .nav {
             margin-top: 30px;

@@ -9,6 +9,7 @@
                     <div class="col-md-4 bg_blur ">
                         <?php if ($usuarioperfil->getId() == $usuario->getId()){ ?>
                             <a href="#" data-toggle="modal" data-target="#editar-perfil" class="follow_btn">Editar Perfil</a>
+                            <a href="#" data-toggle="modal" data-target="#novo-post" class="follow_btn new-post">Novo Post</a>
                         <?php }else { ?>
                             <?php if ($relController->fezSolicitacao($usuario->getId(),$usuarioperfil->getId())) { ?>
                                 <a href="javascript:void(0)" class="follow_btn">Solicitado</a>
@@ -198,7 +199,7 @@
                                                             <img src="<?= $url . "/" . $value->getCaminhoImagem() ?>">
                                                        </a>
                                                     <?php }else { ?>
-                                                        <img src="<?= $url . "/webfiles/images/back-entrar-min.jpg" ?>">
+                                                        <img src="<?= $url . "/webfiles/images/back-post.png" ?>">
                                                     <?php } ?>
                                                 </div>
                                                 <div class="data-postagem">
@@ -358,7 +359,7 @@
                                                           <img src="<?= $url . "/" . $value->getCaminhoImagem() ?>">
                                                        </a>
                                                     <?php }else { ?>
-                                                        <img src="<?= $url . "/webfiles/images/back-entrar-min.jpg" ?>">
+                                                        <img src="<?= $url . "/webfiles/images/back-post.png" ?>">
                                                     <?php } ?>
                                                 </div>
                                                 <div class="data-postagem">
@@ -393,6 +394,7 @@
 
     <?php include_once '_pages\componentes\modal-foto.php'; ?>
     <?php include_once '_pages\componentes\modal-editar-perfil.php'; ?>
+    <?php include_once '_pages\componentes\modal-novo-post.php'; ?>
 
 <?php } ?>
 
