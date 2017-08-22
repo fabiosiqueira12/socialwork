@@ -13,6 +13,7 @@ class Usuario{
     private $descricao;
     private $caminhoImagem;
     private $tipoUsuario;
+    private $token;
 
     public function setId($id){
         $this->id = $id;
@@ -92,6 +93,14 @@ class Usuario{
 
     public function getTipo(){
         return $this->tipoUsuario;
+    }
+
+    public function setToken($token){
+        $this->token = $token;
+    }
+
+    public function getToken(){
+        return $this->token;
     }
 
 

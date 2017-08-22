@@ -1,8 +1,8 @@
 <?php
 
+
 header('Content-Type: text/html; charset=utf-8');
 //Aqui fica a configuração de todas as rotas da aplicação
-
 
 $app->get('/', function ($request, $response, $args) {
     $userControl = new \general\helpers\UserControl();
@@ -190,7 +190,7 @@ $app->post("/logar", function ($request) {
     if ($usuario != null) {
         $userControl = new \general\helpers\UserControl();
         if ($userControl->comparaSenha($senha, $usuario->getSenha())) {
-            $_SESSION["usuario"] = $usuario->getId();
+            $_SESSION["usuario"] = $usuario->getToken();
             echo json_encode(["message" => "Login efetuado com sucesso",
             "type" => 1,
             "redirect" => $url ."/home"]);

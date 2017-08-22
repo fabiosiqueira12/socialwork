@@ -2,6 +2,8 @@
 
 namespace general\controllers;
 
+use general\helpers\UserControl;
+
 class UsuarioController
 {
         
@@ -65,6 +67,7 @@ class UsuarioController
             $usuario->setDescricao($result->descricao);
             $usuario->setSexo($result->sexo);
             $usuario->setId($result->id);
+            $usuario->setToken($result->token);
             $usuario->setTipo($result->tipo_usuario);
             $usuario->setCaminhoImagem($result->caminho_imagem);
         }
@@ -90,6 +93,7 @@ class UsuarioController
             $usuario->setDescricao($result->descricao);
             $usuario->setSexo($result->sexo);
             $usuario->setId($result->id);
+            $usuario->setToken($result->token);
             $usuario->setTipo($result->tipo_usuario);
             $usuario->setCaminhoImagem($result->caminho_imagem);
         }
@@ -116,6 +120,32 @@ class UsuarioController
             $usuario->setDescricao($result->descricao);
             $usuario->setSexo($result->sexo);
             $usuario->setId($result->id);
+            $usuario->setToken($result->token);
+            $usuario->setTipo($result->tipo_usuario);
+            $usuario->setCaminhoImagem($result->caminho_imagem);
+        }
+        return $usuario;
+    }
+
+    public function retornaPorToken($token){
+        $usuario = null;
+        $stmt = $this->PDO->prepare("SELECT * FROM ".
+        $this->tabela.
+        " WHERE token = :token and status_usuario = 1");
+
+        $stmt->bindValue(':token', $token);
+        $stmt->execute();
+        $result = $stmt->fetch(\PDO::FETCH_OBJ);
+        if ($result != null) {
+            $usuario = new \general\models\Usuario();
+            $usuario->setNome($result->nome);
+            $usuario->setUser($result->usuario);
+            $usuario->setEmail($result->email);
+            $usuario->setSenha($result->senha);
+            $usuario->setDescricao($result->descricao);
+            $usuario->setSexo($result->sexo);
+            $usuario->setId($result->id);
+            $usuario->setToken($result->token);
             $usuario->setTipo($result->tipo_usuario);
             $usuario->setCaminhoImagem($result->caminho_imagem);
         }
@@ -156,10 +186,11 @@ class UsuarioController
     {
         
         try {
+            $userControl = new UserControl();
             $stmt = $this->PDO->prepare("INSERT INTO ".
             $this->tabela .
-            "(nome,usuario,email,senha,sexo,descricao)".
-            "VALUES (:nome,:usuario,:email,:senha,:sexo,:descricao)");
+            "(nome,usuario,email,senha,sexo,descricao,token)".
+            "VALUES (:nome,:usuario,:email,:senha,:sexo,:descricao,:token)");
 
             $stmt->bindValue(':nome', $usuario->getNome());
             $stmt->bindValue(":usuario", $usuario->getUser());
@@ -167,6 +198,7 @@ class UsuarioController
             $stmt->bindValue(":senha", $usuario->getSenha());
             $stmt->bindValue(":sexo", $usuario->getSexo());
             $stmt->bindValue(":descricao", $usuario->getDescricao());
+            $stmt->bindValue(":token",$userControl->createToken());
             $stmt->execute();
         } catch (Exception $ex) {
             $this->PDO->rollback();
@@ -262,6 +294,7 @@ class UsuarioController
             while ($row = $statement->fetch(\PDO::FETCH_OBJ)) {
                 $usuario = new \general\models\Usuario();
                 $usuario->setId($row->id);
+                $usuario->setToken($row->token);
                 $usuario->setNome($row->nome);
                 $usuario->setUser($row->usuario);
                 $usuario->setEmail($row->email);

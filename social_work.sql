@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 07-Ago-2017 às 00:44
+-- Generation Time: 22-Ago-2017 às 05:46
 -- Versão do servidor: 10.1.22-MariaDB
 -- PHP Version: 7.1.4
 
@@ -21,8 +21,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `social_work`
 --
-CREATE DATABASE IF NOT EXISTS `social_work` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `social_work`;
 
 -- --------------------------------------------------------
 
@@ -77,6 +75,7 @@ CREATE TABLE `relacionamento` (
 
 CREATE TABLE `usuario` (
   `id` int(11) NOT NULL,
+  `token` varchar(100) NOT NULL,
   `nome` varchar(200) NOT NULL,
   `usuario` varchar(20) NOT NULL,
   `email` varchar(100) NOT NULL,
@@ -133,22 +132,22 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT for table `curtidas`
 --
 ALTER TABLE `curtidas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 --
 -- AUTO_INCREMENT for table `post`
 --
 ALTER TABLE `post`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 --
 -- AUTO_INCREMENT for table `relacionamento`
 --
 ALTER TABLE `relacionamento`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 --
 -- AUTO_INCREMENT for table `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 --
 -- Constraints for dumped tables
 --

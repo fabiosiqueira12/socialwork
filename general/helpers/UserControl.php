@@ -2,6 +2,8 @@
 
 namespace general\helpers;
 
+use general\controllers\UsuarioController;
+
 class UserControl{
 
     public function comparaSenha($senha_digitada,$senha_guardada){
@@ -17,9 +19,9 @@ class UserControl{
 
         if ($this->estaLogado()){
 
-            $usuarioController = new \general\controllers\UsuarioController();
+            $usuarioController = new UsuarioController();
 
-            $usuario = $usuarioController->retornarPorId($this->getId());
+            $usuario = $usuarioController->retornaPorToken($this->getToken());
 
         }
 
@@ -38,10 +40,24 @@ class UserControl{
         }
     }
 
+    public function createToken(){
+        //String com valor possíveis do resultado, os caracteres pode ser adicionado ou retirados conforme sua necessidade
+        $basic = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+        $return= "";
+
+        for($count= 0; 20 > $count; $count++){
+            //Gera um caracter aleatorio
+            $return.= $basic[rand(0, strlen($basic) - 1)];
+        }
+
+        return $return;
+    }
+
     
     //Funções Privadas
 
-    private function getId(){
+    private function getToken(){
         return $_SESSION["usuario"];
     }
     

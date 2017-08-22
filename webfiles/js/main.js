@@ -1,7 +1,7 @@
 $(document).ready(function () {
     var split =  window.location.pathname.split( '/' );
     var URL_BASE = window.location.protocol + "//" + window.location.hostname + "/" + split[1] + "/";
-
+    
     $("#form-login").on("submit", function (event) {
 
         event.preventDefault();
