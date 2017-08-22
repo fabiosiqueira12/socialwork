@@ -31,17 +31,49 @@ $app->get('/users/{id}', function (Request $request, Response $response) {
 });
 
 $app->delete('/users/{id}', function (Request $request, Response $response) {
-    $id = $request->getAttribute('id');
-    $controller = new UsuarioApi();
-    $retorno = $controller->desativar($id);
-    if ($retorno){
-    	return json_encode(["retorno" => "Usuário desativado com sucesso","status" => 1],JSON_UNESCAPED_UNICODE);
-    }else {
-    	return json_encode(["retorno" => "Usuário não foi encontrado","status" => 0],JSON_UNESCAPED_UNICODE);
-    }
-    
+    if ($request->isDelete()){
+        $id = $request->getAttribute('id');
+        $controller = new UsuarioApi();
+        $retorno = $controller->desativar($id);
+        if ($retorno){
+         return json_encode(["retorno" => "Usuário desativado com sucesso","status" => 1],JSON_UNESCAPED_UNICODE);
+     }else {
+         return json_encode(["retorno" => "Usuário já está desativado ou não foi encontrado","status" => 0],JSON_UNESCAPED_UNICODE);
+     }
+ }
 });
 
+$app->post('/users', function (Request $request, Response $response) {
+    if ($request->isPost()){
+        $dados = $request->getParsedBody();
+        $controller = new UsuarioApi();
+        $retorno = $controller->novo($dados);
+        return json_encode(["retorno" => $retorno["mensagem"],"status" => $retorno["status"]],JSON_UNESCAPED_UNICODE);
+    }
+});
+
+$app->post('/users/ativar/{id}', function (Request $request, Response $response) {
+    if ($request->isPost()){
+        $id = $request->getAttribute('id');
+        $controller = new UsuarioApi();
+        $retorno = $controller->ativar($id);
+        if ($retorno){
+            return json_encode(["retorno" => "Usuário ativado com sucesso","status" => 1],JSON_UNESCAPED_UNICODE);
+        }else {
+            return json_encode(["retorno" => "Usuário já está ativado ou não foi encontrado","status" => 0],JSON_UNESCAPED_UNICODE);
+        }
+    }
+});
+
+$app->put('/users/{id}', function (Request $request, Response $response) {
+    if ($request->isPut()){
+        $id = $request->getAttribute('id');
+        $dados = $request->getParsedBody();
+        $controller = new UsuarioApi();
+        $retorno = $controller->editar($id,$dados);
+        return json_encode(["retorno" => $retorno["mensagem"],"status" => $retorno["status"]],JSON_UNESCAPED_UNICODE);
+    }
+});
 
 
 //Rotas para Post
@@ -74,16 +106,41 @@ $app->get('/posts/friends/user/{id}', function (Request $request, Response $resp
 });
 
 $app->delete('/posts/{id}', function (Request $request, Response $response) {
-    $id = $request->getAttribute('id');
-    $controller = new PostApi();
-    $retorno = $controller->excluir($id);
-    if ($retorno){
-    	return json_encode(["retorno" => "Post excluido com sucesso","status" => 1],JSON_UNESCAPED_UNICODE);
-    }else {
-    	return json_encode(["retorno" => "Post não foi encontrado","status" => 0],JSON_UNESCAPED_UNICODE);
+    if ($request->isDelete()){
+        $id = $request->getAttribute('id');
+        $controller = new PostApi();
+        $retorno = $controller->excluir($id);
+        if ($retorno){
+           return json_encode(["retorno" => "Post excluido com sucesso","status" => 1],JSON_UNESCAPED_UNICODE);
+       }else {
+           return json_encode(["retorno" => "Post não foi encontrado","status" => 0],JSON_UNESCAPED_UNICODE);
+       }
+   }
+});
+
+$app->post('/posts', function (Request $request, Response $response) {
+    if ($request->isPost()){
+        $dados = $request->getParsedBody();
+        $controller = new PostApi();
+        $retorno = $controller->novo($dados);
+        return json_encode(["retorno" => $retorno["mensagem"],"status" => $retorno["status"]],JSON_UNESCAPED_UNICODE);
     }
 });
 
+$app->put('/posts/{id}', function (Request $request, Response $response) {
+    if ($request->isPut()){
+        $id = $request->getAttribute('id');
+        $dados = $request->getParsedBody();
+        $controller = new PostApi();
+        $retorno = $controller->editar($id,$dados);
+        return json_encode(["retorno" => $retorno["mensagem"],"status" => $retorno["status"]],JSON_UNESCAPED_UNICODE);
+    }
+});
+
+//Rotas para curtida
+
+
+//Rotas para relacionamento
 
 
 //Executa Api
