@@ -57,9 +57,10 @@ class PostApi
 			'SELECT post.id_usuario as id_usuario, post.id as id_post, post.titulo as titulo_post, post.texto as post_texto, post.data_insert as post_data, post.caminho_imagem as post_imagem FROM '.
 			'post' . ' INNER JOIN relacionamento '.
 			'WHERE post.id_usuario != ' . $usuarioId . ' AND '.
-			'(relacionamento.id_usuario_princ = post.id_usuario OR relacionamento.id_user_seguidor = post.id_usuario) ' .
-			' AND relacionamento.status_relacionamento = 2'.
-			' AND (relacionamento.id_usuario_princ = :usuarioid OR relacionamento.id_user_seguidor = :usuarioid)'.
+			'(relacionamento.id_usuario_princ = post.id_usuario OR relacionamento.id_user_seguidor = post.id_usuario)'.
+			' AND relacionamento.status_relacionamento = 2 '.
+			' AND (relacionamento.id_usuario_princ = ' . $usuarioId . ' OR relacionamento.id_user_seguidor = ' .
+			$usuarioId .' ) '.
 			' AND post.status_post = 1'.
 			' ORDER BY post.data_insert DESC LIMIT 20'
 			);
@@ -112,7 +113,7 @@ class PostApi
 				" WHERE id = :idpost");
 			$stmt->bindValue(':idpost',$idPost);
 			$stmt->execute();
-			return true;
+			return $stmt->rowCount() ? true : false;
 		}catch (Exception $ex) {
 			$this->PDO->rollback();
 		}
@@ -136,7 +137,6 @@ class PostApi
 	private function processa_resultado($statement)
 	{
 		$results = array();
-
 		if ($statement) {
 			while ($row = $statement->fetch(\PDO::FETCH_OBJ)) {
 				$results[] = $row;

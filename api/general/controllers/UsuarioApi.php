@@ -17,7 +17,9 @@ class UsuarioApi
     public function retornaTodos()
     {
         $statement = $this->PDO->query(
-            'SELECT * FROM usuario WHERE status_usuario = 1'
+            'SELECT id,token,nome,usuario,email,
+            sexo,descricao,data_insert,
+            caminho_imagem,tipo_usuario FROM usuario WHERE status_usuario = 1'
             );
 
         return $this->processa_resultado($statement);
@@ -42,7 +44,7 @@ class UsuarioApi
     public function retornaUsuarioPorEmail($email)
     {
         $usuario = null;
-        $stmt = $this->PDO->prepare("SELECT * FROM ".
+        $stmt = $this->PDO->prepare("SELECT id,token,email,senha FROM ".
             $this->tabela.
             " WHERE email = :email and status_usuario = 1");
         
@@ -58,7 +60,7 @@ class UsuarioApi
     public function retornaUsuarioPorLogin($user)
     {
         $usuario = null;
-        $stmt = $this->PDO->prepare("SELECT * FROM ".
+        $stmt = $this->PDO->prepare("SELECT id,token,login,senha FROM ".
             $this->tabela.
             " WHERE usuario = :user and status_usuario = 1");
 
@@ -75,9 +77,11 @@ class UsuarioApi
     {
 
         $usuario = null;
-        $stmt = $this->PDO->prepare("SELECT * FROM ".
-            $this->tabela.
-            " WHERE id = :id and status_usuario = 1");
+        $stmt = $this->PDO->prepare("SELECT id,token,nome,usuario,email,
+        sexo,descricao,data_insert,caminho_imagem,tipo_usuario" .
+        " FROM ".
+        $this->tabela.
+        " WHERE id = :id and status_usuario = 1");
 
         $stmt->bindValue(':id', $id);
         $stmt->execute();
@@ -90,9 +94,11 @@ class UsuarioApi
 
     public function retornaPorToken($token){
         $usuario = null;
-        $stmt = $this->PDO->prepare("SELECT * FROM ".
-            $this->tabela.
-            " WHERE token = :token and status_usuario = 1");
+        $stmt = $this->PDO->prepare("SELECT id,token,nome,usuario,email,
+        sexo,descricao,data_insert,
+        caminho_imagem,tipo_usuario FROM ".
+        $this->tabela.
+        " WHERE token = :token and status_usuario = 1");
 
         $stmt->bindValue(':token', $token);
         $stmt->execute();
@@ -114,7 +120,7 @@ class UsuarioApi
                 " WHERE id = :id");
             $stmt->bindValue(":id", $id);
             $stmt->execute();
-            return true;
+            return $stmt->rowCount() ? true : false;
         } catch (Exception $ex) {
             $this->PDO->rollback();
         }
