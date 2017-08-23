@@ -16,23 +16,14 @@ class BuscaApi
     {
 
         $stmt = $this->PDO->query(
-            "SELECT * FROM usuario WHERE nome LIKE '%".$query."%'"
+            "SELECT id,nome,caminho_imagem,usuario,email FROM usuario WHERE nome LIKE '%".$query."%'"
         );
         
         $results = array();
  
         if ($stmt) {
             while ($row = $stmt->fetch(\PDO::FETCH_OBJ)) {
-                $usuario = new \general\models\Usuario();
-                $usuario->setId($row->id);
-                $usuario->setNome($row->nome);
-                $usuario->setUser($row->usuario);
-                $usuario->setEmail($row->email);
-                $usuario->setSenha($row->senha);
-                $usuario->setSexo($row->sexo);
-                $usuario->setDescricao($row->descricao);
-                $usuario->setCaminhoImagem($row->caminho_imagem);
-                $results[] = $usuario;
+                $results[] = $row;
             }
         }
         return $results;
@@ -40,25 +31,17 @@ class BuscaApi
 
     public function retornaPosts($query)
     {
-        $stmt = $this->PDO->query(
-            "SELECT * FROM post WHERE titulo LIKE '%".$query."%' OR texto LIKE '%".$query."%'"
-        );
+        $stmt = $this->PDO->prepare("SELECT usuario.id as id_usuario , usuario.nome as usuario_nome,
+            usuario.email as usuario_email, usuario.usuario as login,
+            post.id as post_id,post.titulo as post_titulo,post.texto as post_texto,
+            post.caminho_imagem as post_caminho_imagem
+            FROM post INNER JOIN usuario
+            WHERE usuario.id = post.id_usuario AND 
+            post.titulo LIKE '%" . $query . "%'");
 
-        $results = array();
+        $stmt->execute();
+        $result = $stmt->fetchAll(\PDO::FETCH_OBJ);
 
-        if ($stmt) {
-            $usuarioController = new \general\controllers\UsuarioController();
-            while ($row = $stmt->fetch(\PDO::FETCH_OBJ)) {
-                $post = new \general\models\Post();
-                $post->setId($row->id);
-                $post->setTitulo($row->titulo);
-                $post->setTexto($row->texto);
-                $post->setUsuario($usuarioController->retornarPorId($row->id_usuario));
-                $post->setCaminhoImagem($row->caminho_imagem);
-                $post->setDataCriacao($row->data_insert);
-                $results[] = $post;
-            }
-        }
-        return $results;
+        return $result;
     }
 }

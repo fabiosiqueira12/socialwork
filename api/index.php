@@ -3,6 +3,7 @@ header('Content-Type: application/json;charset=utf-8');
 
 use \Psr\Http\Message\ResponseInterface as Response;
 use \Psr\Http\Message\ServerRequestInterface as Request;
+use general\controllers\BuscaApi;
 use general\controllers\CurtidaApi;
 use general\controllers\PostApi;
 use general\controllers\RelacionamentoApi;
@@ -38,11 +39,11 @@ $app->delete('/users/{id}', function (Request $request, Response $response) {
         $controller = new UsuarioApi();
         $retorno = $controller->desativar($id);
         if ($retorno){
-         return json_encode(["retorno" => "Usuário desativado com sucesso","status" => 1],JSON_UNESCAPED_UNICODE);
-     }else {
-         return json_encode(["retorno" => "Usuário já está desativado ou não foi encontrado","status" => 0],JSON_UNESCAPED_UNICODE);
-     }
- }
+           return json_encode(["retorno" => "Usuário desativado com sucesso","status" => 1],JSON_UNESCAPED_UNICODE);
+       }else {
+           return json_encode(["retorno" => "Usuário já está desativado ou não foi encontrado","status" => 0],JSON_UNESCAPED_UNICODE);
+       }
+   }
 });
 
 $app->post('/users', function (Request $request, Response $response) {
@@ -113,11 +114,11 @@ $app->delete('/posts/{id}', function (Request $request, Response $response) {
         $controller = new PostApi();
         $retorno = $controller->excluir($id);
         if ($retorno){
-           return json_encode(["retorno" => "Post excluido com sucesso","status" => 1],JSON_UNESCAPED_UNICODE);
-       }else {
-           return json_encode(["retorno" => "Post não foi encontrado","status" => 0],JSON_UNESCAPED_UNICODE);
-       }
-   }
+         return json_encode(["retorno" => "Post excluido com sucesso","status" => 1],JSON_UNESCAPED_UNICODE);
+     }else {
+         return json_encode(["retorno" => "Post não foi encontrado","status" => 0],JSON_UNESCAPED_UNICODE);
+     }
+ }
 });
 
 $app->post('/posts', function (Request $request, Response $response) {
@@ -223,6 +224,22 @@ $app->get('/users/{id}/resposts', function (Request $request, Response $response
 });
 
 //Rotas para busca
+
+$app->get('/search/{type}/{query}', function (Request $request, Response $response) {
+    $type = $request->getAttribute('type');
+    $query = $request->getAttribute('query');
+    $controller = new BuscaApi();
+    $status = 1;
+    if ($type == 1){
+        $retorno = $controller->retornaPessoas($query);
+    }else if ($type == 2){
+        $retorno = $controller->retornaPosts($query);
+    }else{
+        $retorno = "Tipo incorreto";
+        $status = 0;
+    }
+    return json_encode(["retorno" => $retorno,"status" => $status],JSON_UNESCAPED_UNICODE);
+});
 
 
 //Executa Api
