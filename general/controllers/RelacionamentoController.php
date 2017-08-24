@@ -2,6 +2,8 @@
 
 namespace general\controllers;
 
+use general\helpers\Conexao;
+
 class RelacionamentoController
 {
     private $PDO;
@@ -9,8 +11,8 @@ class RelacionamentoController
     
     function __construct()
     {
-        $this->PDO = new \PDO('mysql:host=localhost;dbname=social_work;charset=utf8', 'root', ''); //Conexão
-        $this->PDO->setAttribute( \PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION ); //habilitando erros do PDO
+        $conexao = new Conexao();
+        $this->PDO = $conexao->retornaConexao();
     }
 
     public function solicitaAmizade($userPediu, $userRecebeu)

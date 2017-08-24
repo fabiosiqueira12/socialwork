@@ -3,20 +3,19 @@
 namespace general\controllers;
 
 use general\controllers\UsuarioController;
+use general\helpers\Conexao;
 
 class PostController
-
-
 {
 
 	private $PDO;
 	private $tabela = "post";
 	
 	function __construct()
-	{
-		$this->PDO = new \PDO('mysql:host=localhost;dbname=social_work;charset=utf8', 'root', ''); //Conexão
-		$this->PDO->setAttribute( \PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION ); //habilitando erros do PDO
-	}
+    {
+        $conexao = new Conexao();
+        $this->PDO = $conexao->retornaConexao();
+    }
 
 	public function retornaTodos()
 	{
