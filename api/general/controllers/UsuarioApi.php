@@ -46,7 +46,7 @@ class UsuarioApi
     public function retornaUsuarioPorEmail($email)
     {
         $usuario = null;
-        $stmt = $this->PDO->prepare("SELECT id,token,email,senha FROM ".
+        $stmt = $this->PDO->prepare("SELECT id,token,email,usuario,senha FROM ".
             $this->tabela.
             " WHERE email = :email and status_usuario = 1");
         
@@ -59,14 +59,14 @@ class UsuarioApi
         return $usuario;
     }
 
-    public function retornaUsuarioPorLogin($user)
+    public function retornaUsuarioPorLogin($email)
     {
         $usuario = null;
-        $stmt = $this->PDO->prepare("SELECT id,token,login,senha FROM ".
+        $stmt = $this->PDO->prepare("SELECT id,token,email,usuario,senha FROM ".
             $this->tabela.
-            " WHERE usuario = :user and status_usuario = 1");
-
-        $stmt->bindValue(':user', $user);
+            " WHERE usuario = :email and status_usuario = 1");
+        
+        $stmt->bindValue(':email', $email);
         $stmt->execute();
         $result = $stmt->fetch(\PDO::FETCH_OBJ);
         if ($result != null) {

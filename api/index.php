@@ -39,11 +39,11 @@ $app->delete('/users/{id}', function (Request $request, Response $response) {
         $controller = new UsuarioApi();
         $retorno = $controller->desativar($id);
         if ($retorno){
-           return json_encode(["retorno" => "Usuário desativado com sucesso","status" => 1],JSON_UNESCAPED_UNICODE);
-       }else {
-           return json_encode(["retorno" => "Usuário já está desativado ou não foi encontrado","status" => 0],JSON_UNESCAPED_UNICODE);
-       }
-   }
+         return json_encode(["retorno" => "Usuário desativado com sucesso","status" => 1],JSON_UNESCAPED_UNICODE);
+     }else {
+         return json_encode(["retorno" => "Usuário já está desativado ou não foi encontrado","status" => 0],JSON_UNESCAPED_UNICODE);
+     }
+ }
 });
 
 $app->post('/users', function (Request $request, Response $response) {
@@ -68,6 +68,19 @@ $app->post('/users/ativar/{id}', function (Request $request, Response $response)
     }
 });
 
+$app->delete('/users/desativar/{id}', function (Request $request, Response $response) {
+    if ($request->isDelete()){
+        $id = $request->getAttribute('id');
+        $controller = new UsuarioApi();
+        $retorno = $controller->desativar($id);
+        if ($retorno){
+            return json_encode(["retorno" => "Usuário desativado com sucesso","status" => 1],JSON_UNESCAPED_UNICODE);
+        }else {
+            return json_encode(["retorno" => "Usuário já está desativado","status" => 0],JSON_UNESCAPED_UNICODE);
+        }
+    }
+});
+
 $app->put('/users/{id}', function (Request $request, Response $response) {
     if ($request->isPut()){
         $id = $request->getAttribute('id');
@@ -78,6 +91,48 @@ $app->put('/users/{id}', function (Request $request, Response $response) {
     }
 });
 
+$app->post('/users/login', function (Request $request, Response $response) {
+    if ($request->isPost()){
+        $dados = $request->getParsedBody();
+        $content = isset($dados["content"]) ? $dados["content"] : null;
+        $senha = isset($dados["senha"]) ? $dados["senha"] : null;
+        if ($content != null && $content != ""){
+
+            if ($senha != null && !empty($senha)){
+                $controller = new UsuarioApi();
+                if (preg_match("/^[a-z0-9_\.\-]+@[a-z0-9_\.\-]*[a-z0-9_\-]+\.[a-z]{2,4}$/", $content)) {
+                    $usuario = $controller->retornaUsuarioPorEmail($content);
+                } else {
+                    $usuario = $controller->retornaUsuarioPorLogin($content);
+                }
+
+                if ($usuario != null){
+                    if (md5($senha) == $usuario->senha){
+                        $retorno["mensagem"] = $usuario->token;
+                        $retorno["status"] = 1;
+                    }else{
+                        $retorno["mensagem"] = "Senha Incorreta";
+                        $retorno["status"] = 0;
+                    }
+                }else {
+                    $retorno["mensagem"] = "Login ou E-mail não encontrado";
+                    $retorno["status"] = 0;
+                }
+
+            }else{
+                $retorno["mensagem"] = "Digite sua senha";
+                $retorno["status"] = 0;
+            }
+
+        }else{
+            $retorno["mensagem"] = "Digite seu login ou E-mail";
+            $retorno["status"] = 0;
+        } 
+        
+        return json_encode(["retorno" => $retorno["mensagem"],"status" => $retorno["status"]],JSON_UNESCAPED_UNICODE);
+
+    }
+});
 
 //Rotas para Post
 
@@ -114,11 +169,11 @@ $app->delete('/posts/{id}', function (Request $request, Response $response) {
         $controller = new PostApi();
         $retorno = $controller->excluir($id);
         if ($retorno){
-         return json_encode(["retorno" => "Post excluido com sucesso","status" => 1],JSON_UNESCAPED_UNICODE);
-     }else {
-         return json_encode(["retorno" => "Post não foi encontrado","status" => 0],JSON_UNESCAPED_UNICODE);
-     }
- }
+           return json_encode(["retorno" => "Post excluido com sucesso","status" => 1],JSON_UNESCAPED_UNICODE);
+       }else {
+           return json_encode(["retorno" => "Post não foi encontrado","status" => 0],JSON_UNESCAPED_UNICODE);
+       }
+   }
 });
 
 $app->post('/posts', function (Request $request, Response $response) {
