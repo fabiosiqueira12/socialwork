@@ -11,7 +11,7 @@ class RelacionamentoApi
     private $caminhoLocal;
     private $imgUserDefault = "/webfiles/images/perfil.png";
     
-    function __construct($baseUrl)
+    function __construct($baseUrl = null)
     {
         $conexao = new Conexao();
         $this->PDO = $conexao->retornaConexao();

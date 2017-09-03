@@ -12,7 +12,7 @@ class UsuarioApi
     private $caminhoLocal;
     private $caminhoImagemDefault = "/webfiles/images/perfil.png";
     
-    function __construct($baseUrl)
+    function __construct($baseUrl = null)
     {
         $conexao = new Conexao();
         $this->PDO = $conexao->retornaConexao();

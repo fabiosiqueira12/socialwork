@@ -11,7 +11,7 @@ class BuscaApi
     private $imgUserDefault = "/webfiles/images/perfil.png";
     private $imgPostDefault = "/webfiles/images/back-post.png";
     
-    function __construct($baseUrl)
+    function __construct($baseUrl = null)
     {
         $conexao = new Conexao();
         $this->PDO = $conexao->retornaConexao();
