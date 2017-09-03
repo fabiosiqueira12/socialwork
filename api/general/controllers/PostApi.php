@@ -12,7 +12,7 @@ class PostApi
 	private $tabela = "post";
 	private $caminhoLocal;
 	private $caminhoImagemDefault = "/webfiles/images/back-post.png";
-	private $imgUserDefault = "/webfiles/images/perfil.png";
+	private $imgUserDefault = "webfiles/images/perfil.png";
 	
 	function __construct($baseUrl = null)
     {
@@ -101,12 +101,6 @@ class PostApi
 		$stmt->execute();
 		$result = $stmt->fetchAll(\PDO::FETCH_OBJ);
 		foreach ($result as $key => $value) {
-			if ($value->usuario_imagem != null){
-				$caminho = $value->usuario_imagem;
-				$value->usuario_imagem = $this->caminhoLocal . $caminho;
-			}else{
-				$value->usuario_imagem = $this->caminhoLocal . $this->imgUserDefault;
-			}
 			if ($value->post_imagem != null){
 				$caminho = $value->post_imagem;
 				$value->post_imagem = $this->caminhoLocal . $caminho;
