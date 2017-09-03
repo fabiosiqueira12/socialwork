@@ -62,7 +62,7 @@ class PostApi
 		'usuario.usuario as usuario_login,usuario.caminho_imagem as usuario_imagem'.
 		' FROM post INNER JOIN usuario '.
 		' WHERE post.status_post = 1 AND usuario.status_usuario = 1 '.
-		' AND ( usuario.id = :id_token OR usuario.token = :id_token )');
+		' AND post.id_usuario = :id_token AND post.id_usuario = usuario.id');
 		$stmt->bindValue(':id_token',$idOrToken);
 		$stmt->execute();
 		$result = $stmt->fetchAll(\PDO::FETCH_OBJ);
