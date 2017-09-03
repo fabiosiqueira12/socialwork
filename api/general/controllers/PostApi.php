@@ -12,6 +12,7 @@ class PostApi
 	private $tabela = "post";
 	private $caminhoLocal;
 	private $caminhoImagemDefault = "/webfiles/images/back-post.png";
+	private $imgUserDefault = "/webfiles/images/perfil.png";
 	
 	function __construct($baseUrl = null)
     {
@@ -78,6 +79,7 @@ class PostApi
 			}else{
 				$value->usuario_imagem = $this->caminhoLocal . $this->caminhoImagemDefault;
 			}
+			$value->post_data = date( 'd/m/Y' , strtotime($value->post_data)) . " às " . date('h:m',strtotime($value->post_data));;
 		}
 		return $result;
 		
@@ -85,18 +87,41 @@ class PostApi
 
 	public function retornaPostsDeAmigos($idOrToken){
 
-		$statement = $this->PDO->query(
-			'SELECT post.id_usuario as id_usuario, post.id as id_post, post.titulo as titulo_post, post.texto as post_texto, post.data_insert as post_data, post.caminho_imagem as caminho_imagem FROM '.
-			'post' . ' INNER JOIN relacionamento '.
+		$stmt = $this->PDO->prepare(
+			'SELECT usuario.id as usuario_id,usuario.usuario as usuario_login,usuario.nome as usuario_nome,usuario.caminho_imagem as usuario_imagem, post.id as id_post, post.titulo as titulo_post, post.texto as post_texto, post.data_insert as post_data, post.caminho_imagem as post_imagem FROM '.
+			'post' . ' INNER JOIN relacionamento INNER JOIN usuario '.
 			'WHERE post.id_usuario != ' . $idOrToken . ' AND '.
 			'(relacionamento.id_usuario_princ = post.id_usuario OR relacionamento.id_user_seguidor = post.id_usuario)'.
 			' AND relacionamento.status_relacionamento = 2 '.
 			' AND (relacionamento.id_usuario_princ = ' . $idOrToken . ' OR relacionamento.id_user_seguidor = ' .
 			$idOrToken .' ) '.
-			' AND post.status_post = 1'.
+			' AND post.status_post = 1 AND post.id_usuario = usuario.id'.
 			' ORDER BY post.data_insert DESC LIMIT 10'
 			);
-		return $this->processa_resultado($statement);
+		$stmt->execute();
+		$result = $stmt->fetchAll(\PDO::FETCH_OBJ);
+		foreach ($result as $key => $value) {
+			if ($value->usuario_imagem != null){
+				$caminho = $value->usuario_imagem;
+				$value->usuario_imagem = $this->caminhoLocal . $caminho;
+			}else{
+				$value->usuario_imagem = $this->caminhoLocal . $this->imgUserDefault;
+			}
+			if ($value->post_imagem != null){
+				$caminho = $value->post_imagem;
+				$value->post_imagem = $this->caminhoLocal . $caminho;
+			}else{
+				$value->post_imagem = $this->caminhoLocal . $this->caminhoImagemDefault;				
+			}
+			if ($value->usuario_imagem != null){
+				$caminho = $value->usuario_imagem;
+				$value->usuario_imagem = $this->caminhoLocal . $caminho;
+			}else{
+				$value->usuario_imagem = $this->caminhoLocal . $this->caminhoImagemDefault;
+			}
+			$value->post_data = date( 'd/m/Y' , strtotime($value->post_data)) . " às " . date('h:m',strtotime($value->post_data));;
+		}
+		return $result;
 	}
 
 	public function novo($dados)
@@ -213,6 +238,8 @@ class PostApi
 				}else{
 					$row->caminho_imagem = $this->caminhoLocal . $this->caminhoImagemDefault;
 				}
+
+
 				
 				$results[] = $row;
 			}
