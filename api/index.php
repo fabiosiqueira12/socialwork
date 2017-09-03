@@ -153,11 +153,12 @@ $app->get('/posts/{id}', function (Request $request, Response $response) {
     return json_encode(["retorno" => $retorno,"status" => 1],JSON_UNESCAPED_UNICODE);
 });
 
-$app->get('/posts/user/{id}', function (Request $request, Response $response) {
+$app->get('/posts/user/{paran}', function (Request $request, Response $response) {
     $baseUrl = $request->getUri()->getScheme() . "://" . $request->getUri()->getHost() . "/socialwork/";    
-    $id = $request->getAttribute('id');
+    $idOrToken = $request->getAttribute('paran');
+    var_dump($idOrToken);
     $controller = new PostApi($baseUrl);
-    $retorno = $controller->retornaQuantidadePorUsuario($id);
+    $retorno = $controller->retornaQuantidadePorUsuario($idOrToken);
     return json_encode(["retorno" => $retorno,"status" => 1],JSON_UNESCAPED_UNICODE);
 });
 

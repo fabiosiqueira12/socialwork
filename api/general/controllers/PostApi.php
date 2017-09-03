@@ -52,16 +52,36 @@ class PostApi
 		return $post;
 	}
 
-	public function retornaQuantidadePorUsuario($idUsuario)
+	public function retornaQuantidadePorUsuario($idOrToken)
 	{
-		$statement = $this->PDO->query(
-			'SELECT * FROM post WHERE status_post = 1 and id_usuario = ' .
-			$idUsuario .
-			' ORDER BY id DESC LIMIT 10 '
-			);
-		return $this->processa_resultado($statement);
+		$stmt = $this->PDO->prepare(
+		'SELECT post.id as post_id,post.titulo as post_titulo,'.
+		'post.texto as post_texto,post.data_insert as post_data,'.
+		'post.caminho_imagem as post_imagem,usuario.nome as usuario_nome,'.
+		'usuario.usuario as usuario_login,usuario.caminho_imagem as usuario_imagem'.
+		' FROM post INNER JOIN usuario '.
+		' WHERE post.status_post = 1 AND usuario.status_usuario = 1 '.
+		' AND ( usuario.id = :id_token OR usuario.token = :id_token )');
+		$stmt->bindValue(':id_token',$idOrToken);
+		$stmt->execute();
+		$result = $stmt->fetchAll(\PDO::FETCH_OBJ);
+		foreach ($result as $key => $value) {
+			if ($value->post_imagem != null){
+				$caminho = $value->post_imagem;
+				$value->post_imagem = $this->caminhoLocal . $caminho;
+			}else{
+				$value->post_imagem = $this->caminhoLocal . $this->caminhoImagemDefault;				
+			}
+			if ($value->usuario_imagem != null){
+				$caminho = $value->usuario_imagem;
+				$value->usuario_imagem = $this->caminhoLocal . $caminho;
+			}else{
+				$value->usuario_imagem = $this->caminhoLocal . $this->caminhoImagemDefault;
+			}
+		}
+		return $result;
+		
 	}
-
 
 	public function retornaPostsDeAmigos($usuarioId){
 
