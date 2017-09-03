@@ -21,14 +21,16 @@ $app->get('/', function (Request $request, Response $response) {
 //Rotas para Usuários
 
 $app->get('/users', function (Request $request, Response $response) {
-    $controller = new UsuarioApi();
+    $baseUrl = $request->getUri()->getScheme() . "://" . $request->getUri()->getHost() . "/socialwork/";
+    $controller = new UsuarioApi( $baseUrl );
     $retorno = $controller->retornaTodos();
     return json_encode(["retorno" => $retorno,"status" => 1],JSON_UNESCAPED_UNICODE);
 });
 
 $app->get('/users/{id}', function (Request $request, Response $response) {
     $id = $request->getAttribute('id');
-    $controller = new UsuarioApi();
+    $baseUrl = $request->getUri()->getScheme() . "://" . $request->getUri()->getHost() . "/socialwork/";
+    $controller = new UsuarioApi($baseUrl);
     $retorno = $controller->retornarPorId($id);
     return json_encode(["retorno" => $retorno,"status" => 1],JSON_UNESCAPED_UNICODE);
 });
@@ -137,28 +139,32 @@ $app->post('/users/login', function (Request $request, Response $response) {
 //Rotas para Post
 
 $app->get('/posts', function (Request $request, Response $response) {
-    $controller = new PostApi();
+    $baseUrl = $request->getUri()->getScheme() . "://" . $request->getUri()->getHost() . "/socialwork/";    
+    $controller = new PostApi($baseUrl);
     $retorno = $controller->retornaTodos();
     return json_encode(["retorno" => $retorno,"status" => 1],JSON_UNESCAPED_UNICODE);
 });
 
 $app->get('/posts/{id}', function (Request $request, Response $response) {
+    $baseUrl = $request->getUri()->getScheme() . "://" . $request->getUri()->getHost() . "/socialwork/";    
     $id = $request->getAttribute('id');
-    $controller = new PostApi();
+    $controller = new PostApi($baseUrl);
     $retorno = $controller->retornaPorId($id);
     return json_encode(["retorno" => $retorno,"status" => 1],JSON_UNESCAPED_UNICODE);
 });
 
 $app->get('/posts/user/{id}', function (Request $request, Response $response) {
+    $baseUrl = $request->getUri()->getScheme() . "://" . $request->getUri()->getHost() . "/socialwork/";    
     $id = $request->getAttribute('id');
-    $controller = new PostApi();
+    $controller = new PostApi($baseUrl);
     $retorno = $controller->retornaQuantidadePorUsuario($id);
     return json_encode(["retorno" => $retorno,"status" => 1],JSON_UNESCAPED_UNICODE);
 });
 
 $app->get('/posts/friends/user/{id}', function (Request $request, Response $response) {
+    $baseUrl = $request->getUri()->getScheme() . "://" . $request->getUri()->getHost() . "/socialwork/";    
     $id = $request->getAttribute('id');
-    $controller = new PostApi();
+    $controller = new PostApi($baseUrl);
     $retorno = $controller->retornaPostsDeAmigos($id);
     return json_encode(["retorno" => $retorno,"status" => 1],JSON_UNESCAPED_UNICODE);
 });
@@ -218,8 +224,9 @@ $app->delete('/users/{id}/like/{idpost}', function (Request $request, Response $
 });
 
 $app->get('/posts/{id}/likes', function (Request $request, Response $response) {
+    $baseUrl = $request->getUri()->getScheme() . "://" . $request->getUri()->getHost() . "/socialwork/";        
     $id = $request->getAttribute('id');
-    $controller = new CurtidaApi();
+    $controller = new CurtidaApi($baseUrl);
     $retorno = $controller->retornaCurtidas($id);
     return json_encode(["retorno" => $retorno,"status" => 1],JSON_UNESCAPED_UNICODE);
 });
@@ -265,15 +272,17 @@ $app->delete('/users/respost/{id}', function (Request $request, Response $respon
 });
 
 $app->get('/users/{id}/friends', function (Request $request, Response $response) {
+    $baseUrl = $request->getUri()->getScheme() . "://" . $request->getUri()->getHost() . "/socialwork/";    
     $id = $request->getAttribute('id');
-    $controller = new RelacionamentoApi();
+    $controller = new RelacionamentoApi($baseUrl);
     $retorno = $controller->retornaAmigos($id);
     return json_encode(["retorno" => $retorno,"status" => 1],JSON_UNESCAPED_UNICODE);
 });
 
 $app->get('/users/{id}/resposts', function (Request $request, Response $response) {
+    $baseUrl = $request->getUri()->getScheme() . "://" . $request->getUri()->getHost() . "/socialwork/";    
     $id = $request->getAttribute('id');
-    $controller = new RelacionamentoApi();
+    $controller = new RelacionamentoApi($baseUrl);
     $retorno = $controller->retornaSolicitacoes($id);
     return json_encode(["retorno" => $retorno,"status" => 1],JSON_UNESCAPED_UNICODE);
 });
@@ -281,9 +290,10 @@ $app->get('/users/{id}/resposts', function (Request $request, Response $response
 //Rotas para busca
 
 $app->get('/search/{type}/{query}', function (Request $request, Response $response) {
+    $baseUrl = $request->getUri()->getScheme() . "://" . $request->getUri()->getHost() . "/socialwork/";        
     $type = $request->getAttribute('type');
     $query = $request->getAttribute('query');
-    $controller = new BuscaApi();
+    $controller = new BuscaApi($baseUrl);
     $status = 1;
     if ($type == 1){
         $retorno = $controller->retornaPessoas($query);

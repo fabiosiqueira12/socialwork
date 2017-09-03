@@ -10,11 +10,14 @@ class PostApi
 
 	private $PDO;
 	private $tabela = "post";
+	private $caminhoLocal;
+	private $caminhoImagemDefault = "/webfiles/images/back-post.png";
 	
-	function __construct()
+	function __construct($baseUrl)
     {
         $conexao = new Conexao();
-        $this->PDO = $conexao->retornaConexao();
+		$this->PDO = $conexao->retornaConexao();
+		$this->caminhoLocal = $baseUrl;
     }
 
 	public function retornaTodos()
@@ -38,6 +41,13 @@ class PostApi
 		$result = $stmt->fetch(\PDO::FETCH_OBJ);
 		if ($result != null) {
 			$post = $result;
+			if ($post->caminho_imagem != null){
+				$caminho = $post->caminho_imagem;
+				$post->caminho_imagem = $this->caminhoLocal . $caminho;
+			}else{
+				$post->caminho_imagem = $this->caminhoLocal . $this->caminhoImagemDefault;
+			}
+			
 		}
 		return $post;
 	}
@@ -177,6 +187,13 @@ class PostApi
 		$results = array();
 		if ($statement) {
 			while ($row = $statement->fetch(\PDO::FETCH_OBJ)) {
+				if ($row->caminho_imagem != null){
+					$caminho = $row->caminho_imagem;
+					$row->caminho_imagem = $this->caminhoLocal . $caminho;
+				}else{
+					$row->caminho_imagem = $this->caminhoLocal . $this->caminhoImagemDefault;
+				}
+				
 				$results[] = $row;
 			}
 		}

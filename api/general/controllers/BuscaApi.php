@@ -7,11 +7,15 @@ use general\helpers\Conexao;
 class BuscaApi
 {
     private $PDO;
+    private $caminhoLocal;
+    private $imgUserDefault = "/webfiles/images/perfil.png";
+    private $imgPostDefault = "/webfiles/images/back-post.png";
     
-    function __construct()
+    function __construct($baseUrl)
     {
         $conexao = new Conexao();
         $this->PDO = $conexao->retornaConexao();
+        $this->caminhoLocal = $baseUrl;
     }
 
     public function retornaPessoas($query)
@@ -25,6 +29,12 @@ class BuscaApi
  
         if ($stmt) {
             while ($row = $stmt->fetch(\PDO::FETCH_OBJ)) {
+                if ($row->caminho_imagem != null){
+                    $caminho = $row->caminho_imagem;
+                    $row->caminho_imagem = $this->caminhoLocal . $caminho;
+                }else{
+                    $row->caminho_imagem = $this->caminhoLocal . $imgUserDefault;
+                }
                 $results[] = $row;
             }
         }
@@ -43,7 +53,14 @@ class BuscaApi
 
         $stmt->execute();
         $result = $stmt->fetchAll(\PDO::FETCH_OBJ);
-
+        foreach ($result as $key => $value) {
+            if ($value->post_caminho_imagem != null){
+                $caminho = $value->post_caminho_imagem;
+                $value->post_caminho_imagem = $this->caminhoLocal . $caminho;
+            }else{
+                $value->post_caminho_imagem = $this->caminhoLocal . $this->imgPostDefault;
+            }
+        }
         return $result;
     }
 }

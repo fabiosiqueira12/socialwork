@@ -9,11 +9,14 @@ class UsuarioApi
 
     private $PDO;
     private $tabela = "usuario";
+    private $caminhoLocal;
+    private $caminhoImagemDefault = "/webfiles/images/perfil.png";
     
-    function __construct()
+    function __construct($baseUrl)
     {
         $conexao = new Conexao();
         $this->PDO = $conexao->retornaConexao();
+        $this->caminhoLocal = $baseUrl;
     }
 
     public function retornaTodos()
@@ -90,6 +93,12 @@ class UsuarioApi
         $result = $stmt->fetch(\PDO::FETCH_OBJ);
         if ($result != null) {
             $usuario = $result;
+            if ($usuario->caminho_imagem != null){
+                $caminho = $usuario->caminho_imagem;
+                $usuario->caminho_imagem = $this->caminhoLocal . $caminho;
+            }else{
+                $usuario->caminho_imagem = $this->caminhoLocal . $this->caminhoImagemDefault;
+            } 
         }
         return $usuario;
     }
@@ -107,6 +116,12 @@ class UsuarioApi
         $result = $stmt->fetch(\PDO::FETCH_OBJ);
         if ($result != null) {
             $usuario = $result;
+            if ($usuario->caminho_imagem != null){
+                $caminho = $usuario->caminho_imagem;
+                $usuario->caminho_imagem = $this->caminhoLocal . $caminho;
+            }else{
+                $usuario->caminho_imagem = $this->caminhoLocal . $this->caminhoImagemDefault;
+            } 
         }
         return $usuario;
     }
@@ -299,6 +314,13 @@ private function processa_resultado($statement)
 
     if ($statement) {
         while ($row = $statement->fetch(\PDO::FETCH_OBJ)) {
+            if ($row->caminho_imagem != null){
+                $caminho = $row->caminho_imagem;
+                $row->caminho_imagem = $this->caminhoLocal . $caminho;
+            }else{
+                $row->caminho_imagem = $this->caminhoLocal . $this->caminhoImagemDefault;
+            }
+            
             $results[] = $row;
         }
     }

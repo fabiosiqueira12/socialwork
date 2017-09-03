@@ -8,11 +8,14 @@ class RelacionamentoApi
 {
     private $PDO;
     private $tabela = "relacionamento";
+    private $caminhoLocal;
+    private $imgUserDefault = "/webfiles/images/perfil.png";
     
-    function __construct()
+    function __construct($baseUrl)
     {
         $conexao = new Conexao();
         $this->PDO = $conexao->retornaConexao();
+        $this->caminhoLocal = $baseUrl;
     }
 
     public function solicitaAmizade($userPediu, $userRecebeu)
@@ -141,6 +144,14 @@ class RelacionamentoApi
         $stmt->bindValue(':usuarioid',$usuarioId);
         $stmt->execute();
         $result = $stmt->fetchAll(\PDO::FETCH_OBJ);
+        foreach ($result as $key => $value) {
+            if ($value->imagem_usuario != null){
+                $caminho = $value->imagem_usuario;
+                $value->imagem_usuario = $this->caminhoLocal . $caminho;
+            }else{
+                $value->imagem_usuario = $this->caminhoLocal . $imgUserDefault;
+            }
+        }
 
         return $result;
     }
@@ -158,7 +169,14 @@ class RelacionamentoApi
         $stmt->bindValue(':usuarioid',$usuarioId);
         $stmt->execute();
         $result = $stmt->fetchAll(\PDO::FETCH_OBJ);
-
+        foreach ($result as $key => $value) {
+            if ($value->imagem_usuario != null){
+                $caminho = $value->imagem_usuario;
+                $value->imagem_usuario = $this->caminhoLocal . $caminho;
+            }else{
+                $value->imagem_usuario = $this->caminhoLocal . $imgUserDefault;
+            }
+        }
         return $result;
     }
 
