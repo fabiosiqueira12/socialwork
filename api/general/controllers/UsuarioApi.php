@@ -49,7 +49,7 @@ class UsuarioApi
     public function retornaUsuarioPorEmail($email)
     {
         $usuario = null;
-        $stmt = $this->PDO->prepare("SELECT id,token,email,usuario,senha FROM ".
+        $stmt = $this->PDO->prepare("SELECT id,nome,token,caminho_imagem,email,usuario,descricao,senha FROM ".
             $this->tabela.
             " WHERE email = :email and status_usuario = 1");
         
@@ -58,6 +58,12 @@ class UsuarioApi
         $result = $stmt->fetch(\PDO::FETCH_OBJ);
         if ($result != null) {
             $usuario = $result;
+            if ($usuario->caminho_imagem != null){
+                $caminho = $usuario->caminho_imagem;
+                $usuario->caminho_imagem = $this->caminhoLocal . $caminho;
+            }else{
+                $usuario->caminho_imagem = $this->caminhoLocal . $this->caminhoImagemDefault;
+            }
         }
         return $usuario;
     }
@@ -65,7 +71,7 @@ class UsuarioApi
     public function retornaUsuarioPorLogin($email)
     {
         $usuario = null;
-        $stmt = $this->PDO->prepare("SELECT id,token,email,usuario,senha FROM ".
+        $stmt = $this->PDO->prepare("SELECT id,nome,token,caminho_imagem,email,usuario,descricao,senha FROM ".
             $this->tabela.
             " WHERE usuario = :email and status_usuario = 1");
         
@@ -73,7 +79,14 @@ class UsuarioApi
         $stmt->execute();
         $result = $stmt->fetch(\PDO::FETCH_OBJ);
         if ($result != null) {
+            if ($result->caminho_imagem != null){
+                $caminho = $result->caminho_imagem;
+                $result->caminho_imagem = $this->caminhoLocal . $caminho;
+            }else{
+                $result->caminho_imagem = $this->caminhoLocal . $this->caminhoImagemDefault;
+            }
             $usuario = $result;
+            
         }
         return $usuario;
     }

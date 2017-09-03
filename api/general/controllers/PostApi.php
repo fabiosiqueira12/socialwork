@@ -83,16 +83,16 @@ class PostApi
 		
 	}
 
-	public function retornaPostsDeAmigos($usuarioId){
+	public function retornaPostsDeAmigos($idOrToken){
 
 		$statement = $this->PDO->query(
-			'SELECT post.id_usuario as id_usuario, post.id as id_post, post.titulo as titulo_post, post.texto as post_texto, post.data_insert as post_data, post.caminho_imagem as post_imagem FROM '.
+			'SELECT post.id_usuario as id_usuario, post.id as id_post, post.titulo as titulo_post, post.texto as post_texto, post.data_insert as post_data, post.caminho_imagem as caminho_imagem FROM '.
 			'post' . ' INNER JOIN relacionamento '.
-			'WHERE post.id_usuario != ' . $usuarioId . ' AND '.
+			'WHERE post.id_usuario != ' . $idOrToken . ' AND '.
 			'(relacionamento.id_usuario_princ = post.id_usuario OR relacionamento.id_user_seguidor = post.id_usuario)'.
 			' AND relacionamento.status_relacionamento = 2 '.
-			' AND (relacionamento.id_usuario_princ = ' . $usuarioId . ' OR relacionamento.id_user_seguidor = ' .
-			$usuarioId .' ) '.
+			' AND (relacionamento.id_usuario_princ = ' . $idOrToken . ' OR relacionamento.id_user_seguidor = ' .
+			$idOrToken .' ) '.
 			' AND post.status_post = 1'.
 			' ORDER BY post.data_insert DESC LIMIT 10'
 			);

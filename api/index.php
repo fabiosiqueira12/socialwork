@@ -95,13 +95,14 @@ $app->put('/users/{id}', function (Request $request, Response $response) {
 
 $app->post('/users/login', function (Request $request, Response $response) {
     if ($request->isPost()){
+        $baseUrl = $request->getUri()->getScheme() . "://" . $request->getUri()->getHost() . "/socialwork/"; 
         $dados = $request->getParsedBody();
         $content = isset($dados["content"]) ? $dados["content"] : null;
         $senha = isset($dados["senha"]) ? $dados["senha"] : null;
         if ($content != null && $content != ""){
 
             if ($senha != null && !empty($senha)){
-                $controller = new UsuarioApi();
+                $controller = new UsuarioApi($baseUrl);
                 if (preg_match("/^[a-z0-9_\.\-]+@[a-z0-9_\.\-]*[a-z0-9_\-]+\.[a-z]{2,4}$/", $content)) {
                     $usuario = $controller->retornaUsuarioPorEmail($content);
                 } else {
@@ -110,7 +111,8 @@ $app->post('/users/login', function (Request $request, Response $response) {
 
                 if ($usuario != null){
                     if (md5($senha) == $usuario->senha){
-                        $retorno["mensagem"] = $usuario->token;
+                        unset($usuario->senha);
+                        $retorno["mensagem"] = $usuario;
                         $retorno["status"] = 1;
                     }else{
                         $retorno["mensagem"] = "Senha Incorreta";
@@ -161,11 +163,11 @@ $app->get('/posts/user/{paran}', function (Request $request, Response $response)
     return json_encode(["retorno" => $retorno,"status" => 1],JSON_UNESCAPED_UNICODE);
 });
 
-$app->get('/posts/friends/user/{id}', function (Request $request, Response $response) {
+$app->get('/posts/friends/user/{paran}', function (Request $request, Response $response) {
     $baseUrl = $request->getUri()->getScheme() . "://" . $request->getUri()->getHost() . "/socialwork/";    
-    $id = $request->getAttribute('id');
+    $idOrToken = $request->getAttribute('paran');
     $controller = new PostApi($baseUrl);
-    $retorno = $controller->retornaPostsDeAmigos($id);
+    $retorno = $controller->retornaPostsDeAmigos($idOrToken);
     return json_encode(["retorno" => $retorno,"status" => 1],JSON_UNESCAPED_UNICODE);
 });
 
