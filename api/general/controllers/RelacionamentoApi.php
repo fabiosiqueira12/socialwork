@@ -134,7 +134,8 @@ class RelacionamentoApi
     public function retornaSolicitacoes($usuarioId)
     {
         $stmt = $this->PDO->prepare("SELECT usuario.id as id_usuario,usuario.caminho_imagem as imagem_usuario, ".
-        " usuario.usuario as login, relacionamento.data_solicitacao " .
+        " usuario.usuario as login, relacionamento.data_solicitacao as data_solicitacao, " .
+        " usuario.nome as nome_usuario ".
         " FROM relacionamento INNER JOIN usuario".
         " WHERE usuario.id != :usuarioid ".
         " AND (relacionamento.id_usuario_princ = usuario.id OR relacionamento.id_user_seguidor = usuario.id) ".
@@ -151,6 +152,7 @@ class RelacionamentoApi
             }else{
                 $value->imagem_usuario = $this->caminhoLocal . $this->imgUserDefault;
             }
+            $value->data_solicitacao = date( 'd/m/Y' , strtotime($value->data_solicitacao)) . " às " . date('h:m',strtotime($value->data_solicitacao));;
         }
 
         return $result;
