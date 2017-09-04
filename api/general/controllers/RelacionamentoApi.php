@@ -135,7 +135,8 @@ class RelacionamentoApi
     {
         $stmt = $this->PDO->prepare("SELECT usuario.id as id_usuario,usuario.caminho_imagem as imagem_usuario, ".
         " usuario.usuario as login, relacionamento.data_solicitacao as data_solicitacao, " .
-        " usuario.nome as nome_usuario ".
+        " usuario.nome as nome_usuario, ".
+        " relacionamento.id as relacionamento_id ".
         " FROM relacionamento INNER JOIN usuario".
         " WHERE usuario.id != :usuarioid ".
         " AND (relacionamento.id_usuario_princ = usuario.id OR relacionamento.id_user_seguidor = usuario.id) ".
