@@ -206,7 +206,7 @@ class PostApi
 		}
 	}
 
-	public function retornaQuantidadeDePosts($usuarioId){
+	public function retornaQuantPosts($usuarioId){
 		$stmt = $this->PDO->prepare("SELECT id FROM ".
 			$this->tabela.
 			" WHERE id_usuario = :idusuario  and status_post = 1");
@@ -218,7 +218,6 @@ class PostApi
 
 	}
 
-	
 
 	//Funções Privadas
 	private function processa_resultado($statement)

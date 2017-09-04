@@ -141,6 +141,17 @@ class CurtidaApi
         return $result;
     }
 
+    public function retornaQuantLikes($idUsuario){
+        $stmt = $this->PDO->prepare("SELECT id FROM " .
+        $this->tabela .
+        " WHERE id_usuario = :idusuario AND status_curtida = 1");
+        $stmt->bindValue(':idusuario', $idUsuario);
+        $stmt->execute();
+        $result = $stmt->fetchALL();
+
+        return count($result);
+    }
+
     //Funções Privadas
     private function verificaCurtidaDesativada($idPost,$idUsuario){
 

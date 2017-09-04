@@ -308,6 +308,32 @@ $app->get('/search/{type}/{query}', function (Request $request, Response $respon
     return json_encode(["retorno" => $retorno,"status" => $status],JSON_UNESCAPED_UNICODE);
 });
 
+//Outras Rotas
+
+$app->get('/users/{id}/friends/quant', function (Request $request, Response $response) {
+    $baseUrl = $request->getUri()->getScheme() . "://" . $request->getUri()->getHost() . "/socialwork/";    
+    $id = $request->getAttribute('id');
+    $controller = new RelacionamentoApi($baseUrl);
+    $retorno = $controller->retornaQuantAmigos($id);
+    return json_encode(["retorno" => $retorno,"status" => 1],JSON_UNESCAPED_UNICODE);
+});
+
+$app->get('/users/{id}/likes/quant', function (Request $request, Response $response) {
+    $baseUrl = $request->getUri()->getScheme() . "://" . $request->getUri()->getHost() . "/socialwork/";    
+    $id = $request->getAttribute('id');
+    $controller = new CurtidaApi($baseUrl);
+    $retorno = $controller->retornaQuantLikes($id);
+    return json_encode(["retorno" => $retorno,"status" => 1],JSON_UNESCAPED_UNICODE);
+});
+
+$app->get('/users/{id}/posts/quant', function (Request $request, Response $response) {
+    $baseUrl = $request->getUri()->getScheme() . "://" . $request->getUri()->getHost() . "/socialwork/";    
+    $id = $request->getAttribute('id');
+    $controller = new PostApi($baseUrl);
+    $retorno = $controller->retornaQuantPosts($id);
+    return json_encode(["retorno" => $retorno,"status" => 1],JSON_UNESCAPED_UNICODE);
+});
+
 
 //Executa Api
 $app->run();

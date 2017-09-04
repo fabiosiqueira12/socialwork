@@ -180,6 +180,22 @@ class RelacionamentoApi
         return $result;
     }
 
+    public function retornaQuantAmigos($usuarioId)
+    {
+        $stmt = $this->PDO->prepare("SELECT relacionamento.id as id ".
+        " FROM relacionamento INNER JOIN usuario".
+        " WHERE usuario.id != :usuarioid ".
+        " AND (relacionamento.id_usuario_princ = usuario.id OR relacionamento.id_user_seguidor = usuario.id) ".
+        " AND (relacionamento.id_usuario_princ = :usuarioid OR relacionamento.id_user_seguidor = :usuarioid) ".
+        " AND relacionamento.status_relacionamento = 2 AND usuario.status_usuario = 1"
+        );
+        $stmt->bindValue(':usuarioid',$usuarioId);
+        $stmt->execute();
+        $result = $stmt->fetchAll(\PDO::FETCH_OBJ);
+        $quantidade = count($result);
+        return $quantidade;
+    }
+
     private function existeRelacionamento($userPediu, $userRecebeu){
         $stmt = $this->PDO->prepare("SELECT id FROM ".
             $this->tabela .
