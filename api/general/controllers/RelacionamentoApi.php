@@ -149,7 +149,7 @@ class RelacionamentoApi
                 $caminho = $value->imagem_usuario;
                 $value->imagem_usuario = $this->caminhoLocal . $caminho;
             }else{
-                $value->imagem_usuario = $this->caminhoLocal . $imgUserDefault;
+                $value->imagem_usuario = $this->caminhoLocal . $this->imgUserDefault;
             }
         }
 
@@ -159,7 +159,8 @@ class RelacionamentoApi
     public function retornaAmigos($usuarioId)
     {
         $stmt = $this->PDO->prepare("SELECT usuario.id as id_usuario,usuario.caminho_imagem as imagem_usuario, ".
-        " usuario.usuario as login, relacionamento.data_solicitacao " .
+        " usuario.usuario as login, relacionamento.data_solicitacao as data_solicitacao, " .
+        " usuario.nome as nome_usuario ".
         " FROM relacionamento INNER JOIN usuario".
         " WHERE usuario.id != :usuarioid ".
         " AND (relacionamento.id_usuario_princ = usuario.id OR relacionamento.id_user_seguidor = usuario.id) ".
@@ -174,7 +175,7 @@ class RelacionamentoApi
                 $caminho = $value->imagem_usuario;
                 $value->imagem_usuario = $this->caminhoLocal . $caminho;
             }else{
-                $value->imagem_usuario = $this->caminhoLocal . $imgUserDefault;
+                $value->imagem_usuario = $this->caminhoLocal . $this->imgUserDefault;
             }
         }
         return $result;
