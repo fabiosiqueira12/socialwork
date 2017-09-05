@@ -30,14 +30,14 @@ class UsuarioApi
         return $this->processa_resultado($statement);
     }
 
-    public function retornaUsuarioDesativado($email)
+    public function retornaUsuarioDesativado($login)
     {
         $usuario = null;
-        $stmt = $this->PDO->prepare("SELECT * FROM ".
+        $stmt = $this->PDO->prepare("SELECT id FROM ".
             $this->tabela.
-            " WHERE email = :email and status_usuario = 0");
+            " WHERE usuario = :login and status_usuario = 0");
         
-        $stmt->bindValue(':email', $email);
+        $stmt->bindValue(':login', $login);
         $stmt->execute();
         $result = $stmt->fetch(\PDO::FETCH_OBJ);
         if ($result != null) {

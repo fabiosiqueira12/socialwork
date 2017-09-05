@@ -41,11 +41,11 @@ $app->delete('/users/{id}', function (Request $request, Response $response) {
         $controller = new UsuarioApi();
         $retorno = $controller->desativar($id);
         if ($retorno){
-         return json_encode(["retorno" => "Usuário desativado com sucesso","status" => 1],JSON_UNESCAPED_UNICODE);
-     }else {
-         return json_encode(["retorno" => "Usuário já está desativado ou não foi encontrado","status" => 0],JSON_UNESCAPED_UNICODE);
-     }
- }
+           return json_encode(["retorno" => "Usuário desativado com sucesso","status" => 1],JSON_UNESCAPED_UNICODE);
+       }else {
+           return json_encode(["retorno" => "Usuário já está desativado ou não foi encontrado","status" => 0],JSON_UNESCAPED_UNICODE);
+       }
+   }
 });
 
 $app->post('/users', function (Request $request, Response $response) {
@@ -57,16 +57,32 @@ $app->post('/users', function (Request $request, Response $response) {
     }
 });
 
-$app->post('/users/ativar/{id}', function (Request $request, Response $response) {
+$app->post('/users/ativar', function (Request $request, Response $response) {
     if ($request->isPost()){
-        $id = $request->getAttribute('id');
-        $controller = new UsuarioApi();
-        $retorno = $controller->ativar($id);
-        if ($retorno){
-            return json_encode(["retorno" => "Usuário ativado com sucesso","status" => 1],JSON_UNESCAPED_UNICODE);
-        }else {
-            return json_encode(["retorno" => "Usuário já está ativado ou não foi encontrado","status" => 0],JSON_UNESCAPED_UNICODE);
+        $dados = $request->getParsedBody();
+        $login = isset($dados["login"]) ? $dados["login"] : null;
+        if (empty($login) || $login == null){
+            $valido["mensagem"] = "Digite seu usuário";
+            $valido["status"] = 0;
+        }else{
+            $controller = new UsuarioApi();
+            $usuario = $controller->retornaUsuarioDesativado($login);
+            if ($usuario != null){
+                $retorno = $controller->ativar($usuario->id);
+                if ($retorno){
+                    $valido["mensagem"] = "Usuário Ativado";
+                    $valido["status"] = 1;
+                }else {
+                    $valido["mensagem"] = "Usuário já está ativado";
+                    $valido["status"] = 0;
+                }
+            }else{
+                $valido["mensagem"] = "Usuário não encontrado";
+                $valido["status"] = 0;
+            }
         }
+        
+        return json_encode(["retorno" => $valido["mensagem"],"status" => $valido["status"]],JSON_UNESCAPED_UNICODE);
     }
 });
 
@@ -177,11 +193,11 @@ $app->delete('/posts/{id}', function (Request $request, Response $response) {
         $controller = new PostApi();
         $retorno = $controller->excluir($id);
         if ($retorno){
-           return json_encode(["retorno" => "Post excluido com sucesso","status" => 1],JSON_UNESCAPED_UNICODE);
-       }else {
-           return json_encode(["retorno" => "Post não foi encontrado","status" => 0],JSON_UNESCAPED_UNICODE);
-       }
-   }
+         return json_encode(["retorno" => "Post excluido com sucesso","status" => 1],JSON_UNESCAPED_UNICODE);
+     }else {
+         return json_encode(["retorno" => "Post não foi encontrado","status" => 0],JSON_UNESCAPED_UNICODE);
+     }
+ }
 });
 
 $app->post('/posts', function (Request $request, Response $response) {
