@@ -139,8 +139,8 @@ class RelacionamentoApi
         " relacionamento.id as relacionamento_id ".
         " FROM relacionamento INNER JOIN usuario".
         " WHERE usuario.id != :usuarioid ".
-        " AND (relacionamento.id_usuario_princ = usuario.id OR relacionamento.id_user_seguidor = usuario.id) ".
-        " AND (relacionamento.id_usuario_princ = :usuarioid OR relacionamento.id_user_seguidor = :usuarioid) ".
+        " AND (relacionamento.id_usuario_princ = usuario.id) ".
+        " AND (relacionamento.id_user_seguidor = :usuarioid) ".
         " AND relacionamento.status_relacionamento = 1 AND usuario.status_usuario = 1"
         );
         $stmt->bindValue(':usuarioid',$usuarioId);
