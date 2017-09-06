@@ -187,6 +187,15 @@ $app->get('/posts/friends/user/{paran}', function (Request $request, Response $r
     return json_encode(["retorno" => $retorno,"status" => 1],JSON_UNESCAPED_UNICODE);
 });
 
+$app->get('/posts/user/{paran}/friend/{paran2}', function (Request $request, Response $response) {
+    $baseUrl = $request->getUri()->getScheme() . "://" . $request->getUri()->getHost() . "/socialwork/";    
+    $idOrToken = $request->getAttribute('paran');
+    $idFriend = $request->getAttribute('paran2');
+    $controller = new PostApi($baseUrl);
+    $retorno = $controller->retornaPostsDeAmigo($idOrToken,$idFriend);
+    return json_encode(["retorno" => $retorno,"status" => 1],JSON_UNESCAPED_UNICODE);
+});
+
 $app->delete('/posts/{id}', function (Request $request, Response $response) {
     if ($request->isDelete()){
         $id = $request->getAttribute('id');
@@ -348,22 +357,6 @@ $app->get('/users/{id}/posts/quant', function (Request $request, Response $respo
     $controller = new PostApi($baseUrl);
     $retorno = $controller->retornaQuantPosts($id);
     return json_encode(["retorno" => $retorno,"status" => 1],JSON_UNESCAPED_UNICODE);
-});
-
-$app->get('/posts/{postId}/user/{userId}/like', function (Request $request, Response $response) {
-    $baseUrl = $request->getUri()->getScheme() . "://" . $request->getUri()->getHost() . "/socialwork/";    
-    $idPost = $request->getAttribute('postId');
-    $userId = $request->getAttribute('userId');
-    $controller = new CurtidaApi($baseUrl);
-    $retorno = $controller->JaCurtiu($idPost,$userId);
-    if ($retorno){
-        $valido["mensagem"] = "Já Curtiu";
-        $valido["status"] = 1;
-    }else {
-        $valido["mensagem"] = "Não Curtiu";
-        $valido["status"] = 0;
-    }
-    return json_encode(["retorno" => $valido["mensagem"],"status" => $valido["status"]],JSON_UNESCAPED_UNICODE);
 });
 
 //Executa Api

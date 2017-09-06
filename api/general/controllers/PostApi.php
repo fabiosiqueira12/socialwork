@@ -133,6 +133,46 @@ class PostApi
 		return $result;
 	}
 
+	public function retornaPostsDeAmigo($id,$idFriend){
+		$stmt = $this->PDO->prepare(
+			'SELECT usuario.id as usuario_id,usuario.usuario as usuario_login,usuario.nome as usuario_nome,usuario.caminho_imagem as usuario_imagem, post.id as id_post, post.titulo as titulo_post, post.texto as post_texto, post.data_insert as post_data, post.caminho_imagem as post_imagem FROM '.
+			'post' . ' INNER JOIN relacionamento INNER JOIN usuario '.
+			'WHERE post.id_usuario != ' . $id .
+			' AND post.id_usuario = ' . $idFriend .
+			' AND usuario.id = '. $idFriend .
+			' AND (relacionamento.id_usuario_princ = ' . $idFriend . ' OR  relacionamento.id_user_seguidor = '. $idFriend . ') '.
+			' AND relacionamento.status_relacionamento = 2 '.
+			' AND (relacionamento.id_usuario_princ = ' . $id . ' OR relacionamento.id_user_seguidor = ' .
+			$id .' ) '.
+			' AND post.status_post = 1 AND post.id_usuario = usuario.id'.
+			' ORDER BY post.data_insert DESC LIMIT 10'
+			);
+		$stmt->execute();
+		$result = $stmt->fetchAll(\PDO::FETCH_OBJ);
+		$controllerCurtida = new CurtidaApi();
+		foreach ($result as $key => $value) {
+			if ($controllerCurtida->JaCurtiu($value->id_post,$id)){
+				$value->ja_curtiu = 1;
+			}else {
+				$value->ja_curtiu = 0;
+			}
+			if ($value->post_imagem != null){
+				$caminho = $value->post_imagem;
+				$value->post_imagem = $this->caminhoLocal . $caminho;
+			}else{
+				$value->post_imagem = $this->caminhoLocal . $this->caminhoImagemDefault;				
+			}
+			if ($value->usuario_imagem != null){
+				$caminho = $value->usuario_imagem;
+				$value->usuario_imagem = $this->caminhoLocal . $caminho;
+			}else{
+				$value->usuario_imagem = $this->caminhoLocal . $this->caminhoImagemDefault;
+			}
+			$value->post_data = date( 'd/m/Y' , strtotime($value->post_data)) . " às " . date('h:m',strtotime($value->post_data));;
+		}
+		return $result;
+	}
+
 	public function novo($dados)
 	{
 		$valido = $this->verificaDados($dados);
