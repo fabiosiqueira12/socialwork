@@ -2,6 +2,7 @@
 
 namespace general\controllers;
 
+use general\controllers\CurtidaApi;
 use general\helpers\Conexao;
 
 class PostApi
@@ -59,15 +60,22 @@ class PostApi
 		'SELECT post.id as post_id,post.titulo as post_titulo,'.
 		'post.texto as post_texto,post.data_insert as post_data,'.
 		'post.caminho_imagem as post_imagem,usuario.nome as usuario_nome,'.
-		'usuario.usuario as usuario_login,usuario.caminho_imagem as usuario_imagem'.
-		' FROM post INNER JOIN usuario '.
+		'usuario.usuario as usuario_login,usuario.caminho_imagem as usuario_imagem, '.
+		'usuario.id as usuario_id '.
+		' FROM post INNER JOIN usuario'.
 		' WHERE post.status_post = 1 AND usuario.status_usuario = 1 '.
 		' AND post.id_usuario = :id_token AND post.id_usuario = usuario.id'.
 		' ORDER BY post.data_insert DESC');
 		$stmt->bindValue(':id_token',$idOrToken);
 		$stmt->execute();
 		$result = $stmt->fetchAll(\PDO::FETCH_OBJ);
+		$controllerCurtida = new CurtidaApi();
 		foreach ($result as $key => $value) {
+			if ($controllerCurtida->JaCurtiu($value->post_id,$value->usuario_id)){
+				$value->ja_curtiu = 1;
+			}else {
+				$value->ja_curtiu = 0;
+			}
 			if ($value->post_imagem != null){
 				$caminho = $value->post_imagem;
 				$value->post_imagem = $this->caminhoLocal . $caminho;
@@ -101,7 +109,13 @@ class PostApi
 			);
 		$stmt->execute();
 		$result = $stmt->fetchAll(\PDO::FETCH_OBJ);
+		$controllerCurtida = new CurtidaApi();
 		foreach ($result as $key => $value) {
+			if ($controllerCurtida->JaCurtiu($value->id_post,$idOrToken)){
+				$value->ja_curtiu = 1;
+			}else {
+				$value->ja_curtiu = 0;
+			}
 			if ($value->post_imagem != null){
 				$caminho = $value->post_imagem;
 				$value->post_imagem = $this->caminhoLocal . $caminho;
