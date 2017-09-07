@@ -35,6 +35,15 @@ $app->get('/users/{id}', function (Request $request, Response $response) {
     return json_encode(["retorno" => $retorno,"status" => 1],JSON_UNESCAPED_UNICODE);
 });
 
+$app->get('/users/{id}/myfriend/{id2}', function (Request $request, Response $response) {
+    $baseUrl = $request->getUri()->getScheme() . "://" . $request->getUri()->getHost() . "/socialwork/";
+    $id = $request->getAttribute('id');
+    $idFriend = $request->getAttribute('id2');
+    $controller = new UsuarioApi($baseUrl);
+    $retorno = $controller->retornaUsuarioPorLogado($id,$idFriend);
+    return json_encode(["retorno" => $retorno,"status" => 1],JSON_UNESCAPED_UNICODE);
+});
+
 $app->delete('/users/{id}', function (Request $request, Response $response) {
     if ($request->isDelete()){
         $id = $request->getAttribute('id');

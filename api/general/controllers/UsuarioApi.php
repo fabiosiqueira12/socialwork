@@ -2,6 +2,7 @@
 
 namespace general\controllers;
 
+use general\controllers\RelacionamentoApi;
 use general\helpers\Conexao;
 
 class UsuarioApi
@@ -135,6 +136,35 @@ class UsuarioApi
             }else{
                 $usuario->caminho_imagem = $this->caminhoLocal . $this->caminhoImagemDefault;
             } 
+        }
+        return $usuario;
+    }
+
+    public function retornaUsuarioPorLogado($idPrinc,$idFriend){
+        $usuario = null;
+        $stmt = $this->PDO->prepare("SELECT id,token,nome,usuario,email,
+            sexo,descricao,data_insert,caminho_imagem,tipo_usuario" .
+            " FROM ".
+            $this->tabela.
+            " WHERE id = :id and status_usuario = 1");
+
+        $stmt->bindValue(':id', $idPrinc);
+        $stmt->execute();
+        $result = $stmt->fetch(\PDO::FETCH_OBJ);
+        
+        if ($result != null) {
+            $usuario = $result;
+            if ($usuario->caminho_imagem != null){
+                $caminho = $usuario->caminho_imagem;
+                $usuario->caminho_imagem = $this->caminhoLocal . $caminho;
+            }else{
+                $usuario->caminho_imagem = $this->caminhoLocal . $this->caminhoImagemDefault;
+            }
+            if ($this->verificaAmizade($idPrinc,$idFriend)){
+                $usuario->ehAmigo = 1;
+            }else{
+                $usuario->ehAmigo = 0;
+            }
         }
         return $usuario;
     }
@@ -416,4 +446,23 @@ private function getSenha($idUsuario){
     $result = $stmt->fetch(\PDO::FETCH_OBJ);
     return $result->senha;
 }
+
+private function verificaAmizade($idPrinc,$idFriend){
+    $stmt = $this->PDO->prepare("SELECT id FROM ".
+        " relacionamento " .
+        " WHERE ( id_usuario_princ = :usuariologado and id_user_seguidor = :usuarioperfil".
+        " OR id_usuario_princ = :usuarioperfil and id_user_seguidor = :usuariologado )" . 
+        " AND status_relacionamento = 2 ");
+    $stmt->bindValue(':usuariologado',$idPrinc);
+    $stmt->bindValue(':usuarioperfil',$idFriend);
+    $stmt->execute();
+    $result = $stmt->fetchAll();
+
+    if (count($result) > 0){
+        return true;
+    }else {
+        return false;
+    }
+}
+
 }
