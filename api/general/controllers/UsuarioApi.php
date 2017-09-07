@@ -160,11 +160,7 @@ class UsuarioApi
             }else{
                 $usuario->caminho_imagem = $this->caminhoLocal . $this->caminhoImagemDefault;
             }
-            if ($this->verificaAmizade($idPrinc,$idFriend)){
-                $usuario->ehAmigo = 1;
-            }else{
-                $usuario->ehAmigo = 0;
-            }
+            $usuario->relacionamento = $this->verificaAmizade($idPrinc,$idFriend);
         }
         return $usuario;
     }
@@ -448,21 +444,30 @@ private function getSenha($idUsuario){
 }
 
 private function verificaAmizade($idPrinc,$idFriend){
-    $stmt = $this->PDO->prepare("SELECT id FROM ".
+    $stmt = $this->PDO->prepare("SELECT status_relacionamento FROM ".
         " relacionamento " .
-        " WHERE ( id_usuario_princ = :usuariologado and id_user_seguidor = :usuarioperfil".
-        " OR id_usuario_princ = :usuarioperfil and id_user_seguidor = :usuariologado )" . 
-        " AND status_relacionamento = 2 ");
+        " WHERE id_usuario_princ = :usuariologado and id_user_seguidor = :usuarioperfil".
+        " OR id_usuario_princ = :usuarioperfil and id_user_seguidor = :usuariologado ");
     $stmt->bindValue(':usuariologado',$idPrinc);
     $stmt->bindValue(':usuarioperfil',$idFriend);
     $stmt->execute();
-    $result = $stmt->fetchAll();
-
+    $result = $stmt->fetchAll(\PDO::FETCH_OBJ);
     if (count($result) > 0){
-        return true;
-    }else {
-        return false;
+    	foreach ($result as $key => $value) {
+    		$statusRelacionamento = 0;
+    		if ($value->status_relacionamento == 2){
+    			$statusRelacionamento = 2;
+    			break;
+    		}
+    		else if ($value->status_relacionamento == 1){
+    			$statusRelacionamento = 1;
+    			break;
+    		}
+    	}
+    }else{
+    	$statusRelacionamento = 0;
     }
+    return $statusRelacionamento;
 }
 
 }
