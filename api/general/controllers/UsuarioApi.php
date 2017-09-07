@@ -160,7 +160,7 @@ class UsuarioApi
             }else{
                 $usuario->caminho_imagem = $this->caminhoLocal . $this->caminhoImagemDefault;
             }
-            $usuario->relacionamento = $this->verificaAmizade($idPrinc,$idFriend);
+            $usuario->ehAmigo = $this->verificaAmizade($idPrinc,$idFriend);
         }
         return $usuario;
     }
