@@ -23,10 +23,10 @@ class BuscaApi
 
         $stmt = $this->PDO->query(
             "SELECT id,nome,caminho_imagem FROM usuario WHERE nome LIKE '%".$query."%'"
-        );
+            );
         
         $results = array();
- 
+        
         if ($stmt) {
             while ($row = $stmt->fetch(\PDO::FETCH_OBJ)) {
                 if ($row->caminho_imagem != null){
@@ -45,6 +45,7 @@ class BuscaApi
     {
         $stmt = $this->PDO->prepare("SELECT usuario.id as id_usuario , usuario.nome as usuario_nome,
             usuario.email as usuario_email, usuario.usuario as login,
+            usuario.caminho_imagem as usuario_imagem,
             post.id as post_id,post.titulo as post_titulo,post.texto as post_texto,
             post.caminho_imagem as post_caminho_imagem,
             post.data_insert as post_data
@@ -60,6 +61,12 @@ class BuscaApi
                 $value->post_caminho_imagem = $this->caminhoLocal . $caminho;
             }else{
                 $value->post_caminho_imagem = $this->caminhoLocal . $this->imgPostDefault;
+            }
+            if ($value->usuario_imagem != null){
+                $caminho = $value->usuario_imagem;
+                $value->usuario_imagem = $this->caminhoLocal . $caminho;
+            }else{
+                $value->usuario_imagem = $this->caminhoLocal . $this->imgUserDefault;
             }
             $value->post_data = date( 'd/m/Y' , strtotime($value->post_data)) . " às " . date('h:m',strtotime($value->post_data));;
         }
