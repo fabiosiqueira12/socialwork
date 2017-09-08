@@ -22,7 +22,7 @@ class BuscaApi
     {
 
         $stmt = $this->PDO->query(
-            "SELECT id,token,nome,caminho_imagem,usuario,email FROM usuario WHERE nome LIKE '%".$query."%'"
+            "SELECT id,nome,caminho_imagem FROM usuario WHERE nome LIKE '%".$query."%'"
         );
         
         $results = array();
