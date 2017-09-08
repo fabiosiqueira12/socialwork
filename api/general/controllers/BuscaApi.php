@@ -33,7 +33,7 @@ class BuscaApi
                     $caminho = $row->caminho_imagem;
                     $row->caminho_imagem = $this->caminhoLocal . $caminho;
                 }else{
-                    $row->caminho_imagem = $this->caminhoLocal . $imgUserDefault;
+                    $row->caminho_imagem = $this->caminhoLocal . $this->imgUserDefault;
                 }
                 $results[] = $row;
             }
