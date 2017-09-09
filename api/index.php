@@ -50,11 +50,11 @@ $app->delete('/users/{id}', function (Request $request, Response $response) {
         $controller = new UsuarioApi();
         $retorno = $controller->desativar($id);
         if ($retorno){
-         return json_encode(["retorno" => "Usuário desativado com sucesso","status" => 1],JSON_UNESCAPED_UNICODE);
-     }else {
-         return json_encode(["retorno" => "Usuário já está desativado ou não foi encontrado","status" => 0],JSON_UNESCAPED_UNICODE);
-     }
- }
+           return json_encode(["retorno" => "Usuário desativado com sucesso","status" => 1],JSON_UNESCAPED_UNICODE);
+       }else {
+           return json_encode(["retorno" => "Usuário já está desativado ou não foi encontrado","status" => 0],JSON_UNESCAPED_UNICODE);
+       }
+   }
 });
 
 $app->post('/users', function (Request $request, Response $response) {
@@ -211,11 +211,11 @@ $app->delete('/posts/{id}', function (Request $request, Response $response) {
         $controller = new PostApi();
         $retorno = $controller->excluir($id);
         if ($retorno){
-           return json_encode(["retorno" => "Post excluido com sucesso","status" => 1],JSON_UNESCAPED_UNICODE);
-       }else {
-           return json_encode(["retorno" => "Post não foi encontrado","status" => 0],JSON_UNESCAPED_UNICODE);
-       }
-   }
+         return json_encode(["retorno" => "Post excluido com sucesso","status" => 1],JSON_UNESCAPED_UNICODE);
+     }else {
+         return json_encode(["retorno" => "Post não foi encontrado","status" => 0],JSON_UNESCAPED_UNICODE);
+     }
+ }
 });
 
 $app->post('/posts', function (Request $request, Response $response) {
@@ -367,6 +367,23 @@ $app->get('/users/{id}/posts/quant', function (Request $request, Response $respo
     $retorno = $controller->retornaQuantPosts($id);
     return json_encode(["retorno" => $retorno,"status" => 1],JSON_UNESCAPED_UNICODE);
 });
+
+$app->post('/upload/image', function (Request $request, Response $response) {
+    if ($request->isPost()){
+        $baseUrl = $request->getUri()->getScheme() . "://" . $request->getUri()->getHost() . "/socialwork/";
+        $targetPath = "fotos/";
+        $targetPath = $targetPath . basename( $_FILES['file']['name']);
+
+        if (move_uploaded_file($_FILES['file']['tmp_name'], "../" . $targetPath)) {
+            return json_encode(["retorno" => $targetPath,"status" => 1],JSON_UNESCAPED_UNICODE);
+        } else {
+           $retorno = "Erro ao enviar imagem !!, tente novamente";
+           return json_encode(["retorno" => $retorno,"status" => 0],JSON_UNESCAPED_UNICODE);
+        }
+
+    }
+});
+
 
 //Executa Api
 $app->run();
