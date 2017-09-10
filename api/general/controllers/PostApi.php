@@ -177,6 +177,11 @@ class PostApi
 	{
 		$valido = $this->verificaDados($dados);
 		if ($valido["status"] == 1){
+			if ($dados["imagem"] == ""){
+				$imagem = "";
+			}else{
+				$imagem = "fotos/" . $dados["imagem"];
+			}
 			try {
 				$stmt = $this->PDO->prepare("INSERT INTO ".
 					$this->tabela.
@@ -186,7 +191,7 @@ class PostApi
 				$stmt->bindValue(':titulo', $dados["titulo"]);
 				$stmt->bindValue(':texto', $dados["texto"]);
 				$stmt->bindValue(':id_usuario', $dados["idusuario"]);
-				$stmt->bindValue(':caminho_imagem', $dados["caminhoimagem"]);
+				$stmt->bindValue(':caminho_imagem', $imagem);
 				$stmt->execute();
 				if ($stmt->rowCount()){
 					$valido["mensagem"] = "Postado com sucesso";
