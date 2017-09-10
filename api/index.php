@@ -377,8 +377,7 @@ $app->post('/upload/image', function (Request $request, Response $response) {
         if (move_uploaded_file($_FILES['file']['tmp_name'], "../" . $targetPath)) {
             return json_encode(["retorno" => $targetPath,"status" => 1],JSON_UNESCAPED_UNICODE);
         } else {
-           $retorno = "Erro ao enviar imagem !!, tente novamente";
-           return json_encode(["retorno" => $retorno,"status" => 0],JSON_UNESCAPED_UNICODE);
+           return json_encode(["retorno" => "","status" => 0],JSON_UNESCAPED_UNICODE);
         }
 
     }
