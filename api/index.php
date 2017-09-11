@@ -180,11 +180,12 @@ $app->get('/posts/{id}', function (Request $request, Response $response) {
 	return json_encode(["retorno" => $retorno,"status" => 1],JSON_UNESCAPED_UNICODE);
 });
 
-$app->get('/posts/user/{paran}', function (Request $request, Response $response) {
+$app->get('/posts/user/{paran}/{quantidade}', function (Request $request, Response $response) {
 	$baseUrl = $request->getUri()->getScheme() . "://" . $request->getUri()->getHost() . "/socialwork/";    
 	$idOrToken = $request->getAttribute('paran');
+	$quantidade = $request->getAttribute('quantidade');
 	$controller = new PostApi($baseUrl);
-	$retorno = $controller->retornaQuantidadePorUsuario($idOrToken);
+	$retorno = $controller->retornaQuantidadePorUsuario($idOrToken,$quantidade);
 	return json_encode(["retorno" => $retorno,"status" => 1],JSON_UNESCAPED_UNICODE);
 });
 

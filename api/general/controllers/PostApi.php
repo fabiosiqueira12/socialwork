@@ -54,7 +54,7 @@ class PostApi
 		return $post;
 	}
 
-	public function retornaQuantidadePorUsuario($idOrToken)
+	public function retornaQuantidadePorUsuario($idOrToken,$quantidade)
 	{
 		$stmt = $this->PDO->prepare(
 		'SELECT post.id as post_id,post.titulo as post_titulo,'.
@@ -65,7 +65,7 @@ class PostApi
 		' FROM post INNER JOIN usuario'.
 		' WHERE post.status_post = 1 AND usuario.status_usuario = 1 '.
 		' AND post.id_usuario = :id_token AND post.id_usuario = usuario.id'.
-		' ORDER BY post.data_insert DESC');
+		' ORDER BY post.data_insert DESC LIMIT ' . $quantidade);
 		$stmt->bindValue(':id_token',$idOrToken);
 		$stmt->execute();
 		$result = $stmt->fetchAll(\PDO::FETCH_OBJ);
