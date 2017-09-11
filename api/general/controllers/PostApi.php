@@ -16,11 +16,11 @@ class PostApi
 	private $imgUserDefault = "webfiles/images/perfil.png";
 	
 	function __construct($baseUrl = null)
-    {
-        $conexao = new Conexao();
+	{
+		$conexao = new Conexao();
 		$this->PDO = $conexao->retornaConexao();
 		$this->caminhoLocal = $baseUrl;
-    }
+	}
 
 	public function retornaTodos()
 	{
@@ -57,15 +57,15 @@ class PostApi
 	public function retornaQuantidadePorUsuario($idOrToken,$quantidade)
 	{
 		$stmt = $this->PDO->prepare(
-		'SELECT post.id as post_id,post.titulo as post_titulo,'.
-		'post.texto as post_texto,post.data_insert as post_data,'.
-		'post.caminho_imagem as post_imagem,usuario.nome as usuario_nome,'.
-		'usuario.usuario as usuario_login,usuario.caminho_imagem as usuario_imagem, '.
-		'usuario.id as usuario_id '.
-		' FROM post INNER JOIN usuario'.
-		' WHERE post.status_post = 1 AND usuario.status_usuario = 1 '.
-		' AND post.id_usuario = :id_token AND post.id_usuario = usuario.id'.
-		' ORDER BY post.data_insert DESC LIMIT ' . $quantidade);
+			'SELECT post.id as post_id,post.titulo as post_titulo,'.
+			'post.texto as post_texto,post.data_insert as post_data,'.
+			'post.caminho_imagem as post_imagem,usuario.nome as usuario_nome,'.
+			'usuario.usuario as usuario_login,usuario.caminho_imagem as usuario_imagem, '.
+			'usuario.id as usuario_id '.
+			' FROM post INNER JOIN usuario'.
+			' WHERE post.status_post = 1 AND usuario.status_usuario = 1 '.
+			' AND post.id_usuario = :id_token AND post.id_usuario = usuario.id'.
+			' ORDER BY post.data_insert DESC LIMIT ' . $quantidade);
 		$stmt->bindValue(':id_token',$idOrToken);
 		$stmt->execute();
 		$result = $stmt->fetchAll(\PDO::FETCH_OBJ);
@@ -92,6 +92,95 @@ class PostApi
 		}
 		return $result;
 		
+	}
+
+	public function retornaQuantidadePorUsuarioRefresh($idUsuario,$quantidade,$idLastPost,$ordena){
+		if (strtolower($ordena) == "desc"){
+			$sinal = ">";
+		}else{
+			$sinal = "<";
+		}
+		$stmt = $this->PDO->prepare(
+			'SELECT post.id as post_id,post.titulo as post_titulo, '.
+			' post.texto as post_texto,post.data_insert as post_data, '.
+			' post.caminho_imagem as post_imagem,usuario.nome as usuario_nome, '.
+			' usuario.usuario as usuario_login,usuario.caminho_imagem as usuario_imagem, '.
+			' usuario.id as usuario_id '.
+			' FROM post INNER JOIN usuario '.
+			' WHERE post.status_post = 1 AND usuario.status_usuario = 1 '.
+			' AND post.id_usuario = :idusuario AND post.id_usuario = usuario.id AND post.id'. $sinal .' :lastpost '.
+			' ORDER BY post.data_insert ' . $ordena . ' LIMIT ' . $quantidade
+				);
+		$stmt->bindValue(':idusuario',$idUsuario);
+		$stmt->bindValue(':lastpost',$idLastPost);
+		$stmt->execute();
+		$result = $stmt->fetchAll(\PDO::FETCH_OBJ);
+		$controllerCurtida = new CurtidaApi();
+		foreach ($result as $key => $value) {
+			if ($controllerCurtida->JaCurtiu($value->post_id,$value->usuario_id)){
+				$value->ja_curtiu = 1;
+			}else {
+				$value->ja_curtiu = 0;
+			}
+			if ($value->post_imagem != null){
+				$caminho = $value->post_imagem;
+				$value->post_imagem = $this->caminhoLocal . $caminho;
+			}else{
+				$value->post_imagem = $this->caminhoLocal . $this->caminhoImagemDefault;				
+			}
+			if ($value->usuario_imagem != null){
+				$caminho = $value->usuario_imagem;
+				$value->usuario_imagem = $this->caminhoLocal . $caminho;
+			}else{
+				$value->usuario_imagem = $this->caminhoLocal . $this->caminhoImagemDefault;
+			}
+			$value->post_data = date( 'd/m/Y' , strtotime($value->post_data)) . " às " . date('h:m',strtotime($value->post_data));;
+		}
+		return $result;
+	}
+
+	public function retornaPostsDeAmigosRefresh($idUsuario,$quantidade,$idLastPost,$ordena){
+		if (strtolower($ordena) == "desc"){
+			$sinal = ">";
+		}else{
+			$sinal = "<";
+		}
+		$stmt = $this->PDO->prepare(
+			'SELECT usuario.id as usuario_id,usuario.usuario as usuario_login,usuario.nome as usuario_nome,usuario.caminho_imagem as usuario_imagem, post.id as id_post, post.titulo as titulo_post, post.texto as post_texto, post.data_insert as post_data, post.caminho_imagem as post_imagem FROM '.
+			'post' . ' INNER JOIN relacionamento INNER JOIN usuario '.
+			'WHERE post.id_usuario != ' . $idUsuario . ' AND '.
+			'(relacionamento.id_usuario_princ = post.id_usuario OR relacionamento.id_user_seguidor = post.id_usuario)'.
+			' AND relacionamento.status_relacionamento = 2 '.
+			' AND (relacionamento.id_usuario_princ = ' . $idUsuario . ' OR relacionamento.id_user_seguidor = ' .
+			$idUsuario .' ) '.
+			' AND post.status_post = 1 AND post.id_usuario = usuario.id '.
+			' AND post.id ' . $sinal . ' ' . $idLastPost . 
+			' ORDER BY post.data_insert ' . $ordena . ' LIMIT '. $quantidade
+			);
+		$stmt->execute();
+		$result = $stmt->fetchAll(\PDO::FETCH_OBJ);
+		$controllerCurtida = new CurtidaApi();
+		foreach ($result as $key => $value) {
+			if ($controllerCurtida->JaCurtiu($value->id_post,$idUsuario)){
+				$value->ja_curtiu = 1;
+			}else {
+				$value->ja_curtiu = 0;
+			}
+			if ($value->post_imagem != null){
+				$caminho = $value->post_imagem;
+				$value->post_imagem = $this->caminhoLocal . $caminho;
+			}else{
+				$value->post_imagem = $this->caminhoLocal . $this->caminhoImagemDefault;				
+			}
+			if ($value->usuario_imagem != null){
+				$caminho = $value->usuario_imagem;
+				$value->usuario_imagem = $this->caminhoLocal . $caminho;
+			}else{
+				$value->usuario_imagem = $this->caminhoLocal . $this->caminhoImagemDefault;
+			}
+			$value->post_data = date( 'd/m/Y' , strtotime($value->post_data)) . " às " . date('h:m',strtotime($value->post_data));;
+		}
+		return $result;
 	}
 
 	public function retornaPostsDeAmigos($idOrToken){

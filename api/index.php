@@ -189,11 +189,34 @@ $app->get('/posts/user/{paran}/{quantidade}', function (Request $request, Respon
 	return json_encode(["retorno" => $retorno,"status" => 1],JSON_UNESCAPED_UNICODE);
 });
 
+$app->get('/posts/user/{paran}/{quantidade}/refresh/{id}/{ordena}', function (Request $request, Response $response) {
+	$baseUrl = $request->getUri()->getScheme() . "://" . $request->getUri()->getHost() . "/socialwork/";    
+	$idOrToken = $request->getAttribute('paran');
+	$quantidade = $request->getAttribute('quantidade');
+	$idLastPost = $request->getAttribute('id');
+	$ordena = $request->getAttribute('ordena');
+	$controller = new PostApi($baseUrl);
+	$retorno = $controller->retornaQuantidadePorUsuarioRefresh($idOrToken,$quantidade,$idLastPost,$ordena);
+	return json_encode(["retorno" => $retorno,"status" => 1],JSON_UNESCAPED_UNICODE);
+});
+
 $app->get('/posts/friends/user/{paran}', function (Request $request, Response $response) {
 	$baseUrl = $request->getUri()->getScheme() . "://" . $request->getUri()->getHost() . "/socialwork/";    
 	$idOrToken = $request->getAttribute('paran');
 	$controller = new PostApi($baseUrl);
 	$retorno = $controller->retornaPostsDeAmigos($idOrToken);
+	return json_encode(["retorno" => $retorno,"status" => 1],JSON_UNESCAPED_UNICODE);
+});
+
+$app->get('/posts/friends/user/{paran}/{quantidade}/refresh/{id}/{ordena}', function (Request $request,
+	Response $response) {
+	$baseUrl = $request->getUri()->getScheme() . "://" . $request->getUri()->getHost() . "/socialwork/";    
+	$idOrToken = $request->getAttribute('paran');
+	$quantidade = $request->getAttribute('quantidade');
+	$idLastPost = $request->getAttribute('id');
+	$ordena = $request->getAttribute('ordena');
+	$controller = new PostApi($baseUrl);
+	$retorno = $controller->retornaPostsDeAmigosRefresh($idOrToken,$quantidade,$idLastPost,$ordena);
 	return json_encode(["retorno" => $retorno,"status" => 1],JSON_UNESCAPED_UNICODE);
 });
 
