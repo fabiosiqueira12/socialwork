@@ -217,7 +217,9 @@ class PostApi
 			$valido = $this->verificaDados($dados);
 			if ($valido["status"] == 1){
 				if ($dados["caminhoimagem"] == ""){
-					$dados["caminhoimagem"] = $this->getCaminhoImagem($idPost);
+					$imagem = $this->getCaminhoImagem($idPost);
+				}else{
+					$imagem = "fotos/" . $dados["caminhoimagem"];
 				}
 				try {
 
@@ -227,7 +229,7 @@ class PostApi
 						" WHERE id = :idpost");
 					$stmt->bindValue(':titulo', $dados["titulo"]);
 					$stmt->bindValue(':texto', $dados["texto"]);
-					$stmt->bindValue(':caminhoimagem', $dados["caminhoimagem"]);
+					$stmt->bindValue(':caminhoimagem', $imagem);
 					$stmt->bindValue(':dataupdate', date("Y-m-d H:i:s"));
 					$stmt->bindValue(':idpost', $idPost);
 					$stmt->execute();
