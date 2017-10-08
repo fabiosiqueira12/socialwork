@@ -5,6 +5,7 @@ use \Psr\Http\Message\ResponseInterface as Response;
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use general\controllers\BuscaApi;
 use general\controllers\CurtidaApi;
+use general\controllers\LocalizacaoApi;
 use general\controllers\PostApi;
 use general\controllers\RelacionamentoApi;
 use general\controllers\UsuarioApi;
@@ -365,6 +366,58 @@ $app->get('/search/{type}/{query}', function (Request $request, Response $respon
 		$status = 0;
 	}
 	return json_encode(["retorno" => $retorno,"status" => $status],JSON_UNESCAPED_UNICODE);
+});
+
+//Rotas para localização
+
+$app->post('/location', function (Request $request, Response $response) {
+	if ($request->isPost()){
+		$dados = $request->getParsedBody();
+		$controller = new LocalizacaoApi();
+		$retorno = $controller->adicionarLocalizacao($dados);
+		return json_encode(["retorno" => $retorno["mensagem"],"status" => $retorno["status"]],JSON_UNESCAPED_UNICODE);
+	}
+});
+
+$app->post('/location/{id}', function (Request $request, Response $response) {
+	if ($request->isPost()){
+		$id = $request->getAttribute('id');
+		$dados = $request->getParsedBody();
+		$controller = new LocalizacaoApi();
+		$retorno = $controller->editarLocalizacao($dados,$id);
+		return json_encode(["retorno" => $retorno["mensagem"],"status" => $retorno["status"]],JSON_UNESCAPED_UNICODE);
+	}
+});
+
+$app->get('/location/{idusuario}', function (Request $request, Response $response) {
+	$baseUrl = $request->getUri()->getScheme() . "://" . $request->getUri()->getHost() . "/socialwork/";
+	$idUsuario = $request->getAttribute('idusuario');    
+	$controller = new LocalizacaoApi($baseUrl);
+	$retorno = $controller->retornaTodosPorUsuario($idUsuario);
+	return json_encode(["retorno" => $retorno,"status" => 1],JSON_UNESCAPED_UNICODE);
+});
+
+$app->get('/location', function (Request $request, Response $response) {
+	$baseUrl = $request->getUri()->getScheme() . "://" . $request->getUri()->getHost() . "/socialwork/";    
+	$controller = new LocalizacaoApi($baseUrl);
+	$retorno = $controller->retornaTodos();
+	return json_encode(["retorno" => $retorno,"status" => 1],JSON_UNESCAPED_UNICODE);
+});
+
+$app->delete('/location/{id}', function (Request $request, Response $response) {
+	if ($request->isDelete()){
+		$id = $request->getAttribute('id');
+		$controller = new LocalizacaoApi();
+		$retorno = $controller->removerLocalizacao($id);
+		if ($retorno){
+			$valida["mensagem"] = "Localização removida com sucesso";
+			$valida["status"] = 1;
+		}else{
+			$valida["mensagem"] = "Erro ao remover localização ou localização já foi removida";
+			$valida["status"] = 0;
+		}
+		return json_encode(["retorno" => $valida["mensagem"],"status" => $valida["status"]],JSON_UNESCAPED_UNICODE);
+	}
 });
 
 //Rotas Helpers
