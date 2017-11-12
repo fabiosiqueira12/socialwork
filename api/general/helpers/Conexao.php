@@ -6,9 +6,9 @@ namespace general\helpers;
 class Conexao{
 
 	private $PDO;
-	private $dns = 'mysql:host=localhost;port=3306;dbname=social_work;charset=utf8';
-	private $user = 'root';
-	private $pass = '';
+	private $dns = 'mysql:host=sql10.freemysqlhosting.net;port=3306;dbname=sql10204519;charset=utf8';
+	private $user = 'sql10204519';
+	private $pass = '2vR8RLJB5s';
 
 	function __construct()
 	{
