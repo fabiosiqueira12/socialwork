@@ -14,12 +14,19 @@
         <!--- JS !-->
         <script src="<?= $url ?>/webfiles/js/jquery.min.js"></script>
         <script src="<?= $url ?>/webfiles/js/jquery.form.min.js"></script>
+        <script src="<?= $url ?>/webfiles/js/jquery.mask.min.js"></script>
         <script src="<?= $url ?>/webfiles/js/tether.min.js"></script>
         <script src="<?= $url ?>/webfiles/js/bootstrap.min.js"></script>
         <script src="<?= $url ?>/webfiles/js/sweetalert.min.js"></script>
         <script src="<?= $url ?>/webfiles/js/venobox.min.js"></script>
         <script src="<?= $url ?>/webfiles/js/main.js"></script>
         <!-- Fim JS !-->
+
+        <!-- Modal Localização !-->
+        
+        <?php include_once '_pages\componentes\modal-localizacao.php'; ?>  
+
+        <!-- FIM Modal Localização !-->
     
     </body>
 </html>

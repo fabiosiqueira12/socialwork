@@ -97,6 +97,7 @@
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                         <a class="dropdown-item" href="<?= $url . "/perfil" . "/" . $usuario->getUser() ?>"><i class="fa fa-user"></i>Meu Perfil</a>
                                         <a class="dropdown-item" href="<?= $url . "/amigos" ?>"><i class="fa fa-users"></i>Amigos</a>
+                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#adicionar-locazicao"><i class="fa fa-map-marker"></i>Localização    </a>
                                         <a class="dropdown-item" href="javascript:void(0)" data-id="<?= $usuario->getId() ?>" id="btn-desativar"><i class="fa fa-times"></i>Desativar</a>
                                         <a id="btn-sair" class="dropdown-item" href="javascript:void(0)"><i class="fa fa-sign-out"></i>Sair</a>
                                     </div>

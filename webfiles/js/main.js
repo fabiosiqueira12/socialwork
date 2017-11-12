@@ -1,7 +1,7 @@
 $(document).ready(function () {
-    var split =  window.location.pathname.split( '/' );
+    var split = window.location.pathname.split('/');
     var URL_BASE = window.location.protocol + "//" + window.location.hostname + "/" + split[1] + "/";
-    
+
     $("#form-login").on("submit", function (event) {
 
         event.preventDefault();
@@ -518,8 +518,130 @@ $(document).ready(function () {
 
     });
 
+    $(".mask-cep").mask("99.999-999");
+
+    $("#cep").blur(function () {
+        var cep = $(this).val().replace(/\D/g, '');
+        //Verifica se campo cep possui valor informado.
+        if (cep != "") {
+
+            //Expressão regular para validar o CEP.
+            var validacep = /^[0-9]{8}$/;
+
+            //Valida o formato do CEP.
+            if (validacep.test(cep)) {
+
+                //Preenche os campos com "..." enquanto consulta webservice.
+                $("#rua").val(" Carregando ");
+                $("#bairro").val(" Carregando ");
+                $("#cidade").val(" Carregando ");
+                $("#uf").val(" Carregando ");
+
+                //Consulta o webservice viacep.com.br/
+                $.getJSON("//viacep.com.br/ws/" + cep + "/json/?callback=?", function (dados) {
+
+                    if (!("erro" in dados)) {
+                        //Atualiza os campos com os valores da consulta.
+                        $("#rua").val(dados.logradouro);
+                        $("#bairro").val(dados.bairro);
+                        $("#cidade").val(dados.localidade);
+                        $("#uf").val(dados.uf);
+                    } //end if.
+                    else {
+                        //CEP pesquisado não foi encontrado.
+                        limpa_formulario_cep();
+                        swal(
+                            'Oops...',
+                            'O CEP não foi encontrando !',
+                            'error'
+                        );
+                    }
+                });
+            } //end if.
+            else {
+                //cep é inválido.
+                limpa_formulario_cep();
+                swal(
+                    'Oops...',
+                    'Formato de CEP válido !',
+                    'error'
+                );
+            }
+        } //end if.
+        else {
+            //cep sem valor, limpa formulário.
+            limpa_formulario_cep();
+        }
+
+    });
+
+    $("#botao-local").click(function () {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition, showError);
+        } else {
+            swal(
+                'Oops...',
+                'O seu navegador não suporta a geolocalização !',
+                'error'
+            );
+        }
+    });
+
+    $("#form-adicionar-locazicao").on("submit", function (event) {
+        event.preventDefault();
+    });
+
     $('.venobox').venobox({
-        spinner : "cube-grid"
+        spinner: "cube-grid"
     });
 
 });
+
+function limpa_formulario_cep() {
+    $("#rua").val("");
+    $("#bairro").val("");
+    $("#cidade").val("");
+    $("#uf").val("");
+}
+
+function showPosition(position) {
+    lat = position.coords.latitude;
+    lon = position.coords.longitude;
+    console.log(lat);
+    console.log(lon);
+    $("#latitude").val(lat);
+    $("#longitude").val(lon);
+}
+
+function showError(error) {
+    switch (error.code) {
+        case error.PERMISSION_DENIED:
+            swal(
+                'Oops...',
+                "Usuário rejeitou a solicitação de Geolocalização.",
+                'error'
+            );
+            break;
+        case error.POSITION_UNAVAILABLE:
+            swal(
+                'Oops...',
+                "Localização indisponível.",
+                'error'
+            );
+            break;
+        case error.TIMEOUT:
+            swal(
+                'Oops...',
+                "O tempo da requisição expirou.",
+                'error'
+            );
+            break;
+        case error.UNKNOWN_ERROR:
+            swal(
+                'Oops...',
+                "Algum erro desconhecido aconteceu.",
+                'error'
+            );
+            break;
+    }
+}
