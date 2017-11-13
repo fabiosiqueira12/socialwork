@@ -56,6 +56,20 @@
     </div>
 </section>
 
+<section class="botao-local">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div style="margin-top : 30px;margin-bottom : 30px;text-align : center">
+                    <a title="<?= $end ?>" style="font-weight : bold;text-transform : uppercase; color : #000;border : 1px solid #000" href="https://www.google.com/maps/embed/v1/place?key=AIzaSyANgAmr0NYico5FpX16SQuE2_RXfy0daqA&q=<?= $end ?>" class="btn venobox" data-vbtype="iframe">
+                        <i class="fa fa-map-marker"></i>  Ver Localização
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
 <section class="posts">
     <div class="container">
         <div class="row" style="display : flex;justify-content : center">

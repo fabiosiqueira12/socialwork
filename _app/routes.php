@@ -86,6 +86,11 @@ $app->get('/perfil/{user}', function ($request, $response, $args) {
         $postController = new \general\controllers\PostController();
         $posts = $postController->retornaQuantidadePorUsuario($usuarioperfil->getId());
         $quantidadeDePosts = $postController->retornaQuantidadeDePosts($usuarioperfil->getId());
+
+        $localController = new \general\controllers\LocalizacaoController();
+        $local = $localController->retornaPorUsuario($usuarioperfil->getId());
+        $end = $local->logradouro . ", " . $local->bairro . ", " . $local->cidade . " - ".$local->uf . ", ".$local->cep;
+
         return $this->view->render($response, 'perfil/meu-perfil.php',
         ["title" => "Rede Social de teste",
                 "descricao" => "Rede Social de teste.",
@@ -93,7 +98,8 @@ $app->get('/perfil/{user}', function ($request, $response, $args) {
                 "usuario" => $userControl->retornaUsuarioLogado(),
                 "usuarioperfil" => $usuarioperfil,
                 "posts" => $posts,
-                "quantidadeposts" => $quantidadeDePosts
+                "quantidadeposts" => $quantidadeDePosts,
+                "end" => $end
         ]);
     } else {
         return $response->withRedirect('login');
@@ -423,6 +429,17 @@ $app->post("/novopost", function ($request) {
             }
         }
     }
+});
+
+$app->post("/novalocalizacao", function ($request) {
+    
+        $userid = $_POST["id_usuario"];
+
+        $localizacaoController = new \general\controllers\LocalizacaoController();
+
+        $localizacaoController->salvar($_POST);
+        echo json_encode("Localização salva com sucesso", JSON_UNESCAPED_UNICODE);
+        
 });
 
 $app->post("/editarpost", function ($request) {

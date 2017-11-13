@@ -546,6 +546,12 @@ $(document).ready(function () {
                         $("#bairro").val(dados.bairro);
                         $("#cidade").val(dados.localidade);
                         $("#uf").val(dados.uf);
+
+                        $.getJSON("http://maps.googleapis.com/maps/api/geocode/json?address=" + $("#cep").val() + "&sensor=false", function (retorno) {
+                            $("#latitude").val(retorno.results[0].geometry.location.lat);
+                            $("#longitude").val(retorno.results[0].geometry.location.lng);
+                        });
+
                     } //end if.
                     else {
                         //CEP pesquisado não foi encontrado.
@@ -589,6 +595,43 @@ $(document).ready(function () {
 
     $("#form-adicionar-locazicao").on("submit", function (event) {
         event.preventDefault();
+
+        var dados = {
+            cep: $("#cep").val(),
+            uf: $("#uf").val(),
+            numero: $("#numero").val(),
+            logradouro: $("#rua").val(),
+            complemento: $("#complemento").val(),
+            bairro: $("#bairro").val(),
+            cidade: $("#cidade").val(),
+            latitude: $("#latitude").val(),
+            longitude: $("#longitude").val(),
+            id_usuario: $("#id-user").val()
+        }
+
+        $.ajax({
+            type: "POST",
+            url: URL_BASE + "novalocalizacao",
+            data: dados,
+            dataType: 'json',
+            success: function (response) {
+                swal({
+                        title: "Sucesso !!",
+                        text: response.message,
+                        type: "success",
+                        closeOnConfirm: true
+                    },
+                    function () {
+                        window.location.reload();
+                    });
+            },
+            error: function () {
+                console.log(response.message);
+            }
+        }).always(function () {
+
+        });
+
     });
 
     $('.venobox').venobox({
@@ -607,10 +650,15 @@ function limpa_formulario_cep() {
 function showPosition(position) {
     lat = position.coords.latitude;
     lon = position.coords.longitude;
-    console.log(lat);
-    console.log(lon);
     $("#latitude").val(lat);
     $("#longitude").val(lon);
+    $.getJSON("http://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lon + "&sensor=true", function (dados) {
+        $("#uf").val(dados.results[0].address_components[5].short_name);
+        $("#numero").val(dados.results[0].address_components[0].short_name);
+        $("#rua").val(dados.results[0].address_components[1].short_name);
+        $("#bairro").val(dados.results[0].address_components[2].short_name);
+        $("#cidade").val(dados.results[0].address_components[3].short_name);
+    });
 }
 
 function showError(error) {
